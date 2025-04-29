@@ -1,60 +1,70 @@
-﻿
+﻿using System.Reflection;
+using IImage = Microsoft.Maui.Graphics.IImage;
+using Microsoft.Maui.Graphics.Platform;
 
-namespace PoleChudes
+namespace PoleChudes;
+
+public class Baraban : GraphicsView, IDrawable
 {
-    public class Baraban : GraphicsView, IDrawable
+    public float Angle { get; set; } = 0;
+
+    private readonly List<IImage?> _sectorImages = new();
+
+    public Baraban()
     {
-        private BarabanViewModel _viewModel;
+        Drawable = this;
+        LoadSectorImages();
+    }
 
-        public Baraban(BarabanViewModel viewModel)
+    private void LoadSectorImages()
+    {
+        IImage? image;
+        Assembly assembly = GetType().GetTypeInfo().Assembly;
+        using (Stream? stream = assembly.GetManifestResourceStream("PoleChudes.Resources.Images.sek1.png"))
         {
-            _viewModel = viewModel;
-            Drawable = this;
-
-            // Подписка на изменения угла
-            _viewModel.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(BarabanViewModel.Angle))
-                {
-                    Invalidate(); // Перерисовать барабан
-                }
-            };
+            if (stream != null) image = PlatformImage.FromStream(stream);
+            else image = null;
         }
 
-        public void Draw(ICanvas canvas, RectF dirtyRect)
+        _sectorImages.Add(image);
+    }
+
+    public void Draw(ICanvas canvas, RectF dirtyRect)
+    {
+        canvas.SaveState();
+
+        float centerX = dirtyRect.Width / 2;
+        float centerY = dirtyRect.Height / 2;
+        float radius = Math.Min(centerX, centerY) - 10;
+
+        canvas.Translate(centerX, centerY);
+        canvas.Rotate(Angle);
+
+        int sectorCount = 9;
+        float sectorAngle = 360f / sectorCount;
+
+        for (int i = 0; i < sectorCount; i++)
         {
             canvas.SaveState();
+            canvas.Rotate(sectorAngle * i);
 
-            float centerX = (float)(dirtyRect.Width / 2);
-            float centerY = (float)(dirtyRect.Height / 2);
-            float radius = Math.Min(centerX, centerY) - 10;
-
-            canvas.Translate(centerX, centerY);
-            canvas.Rotate((float)_viewModel.Angle);
-
-            // Рисуем круг с 9 секторами
-            int sectorCount = 9;
-            float sectorAngle = 360f / sectorCount;
-
-            for (int i = 0; i < sectorCount; i++)
+            if (i < _sectorImages.Count && _sectorImages[i] is IImage img)
             {
-                canvas.SaveState();
-                canvas.Rotate(sectorAngle * i);
+                float imageWidth = 40;
+                float imageHeight = 40;
+                float imageX = radius * 0.6f - imageWidth / 2;
+                float imageY = -imageHeight / 2;
 
-                // Нарисовать сектор
-                canvas.StrokeColor = Colors.Black;
-                canvas.StrokeSize = 2;
-                canvas.DrawLine(0, 0, radius, 0);
-
-                canvas.RestoreState();
+                canvas.DrawImage(img, imageX, imageY, imageWidth, imageHeight);
             }
-
-            // Нарисовать окружность
-            canvas.StrokeColor = Colors.Black;
-            canvas.StrokeSize = 4;
-            canvas.DrawCircle(0, 0, radius);
 
             canvas.RestoreState();
         }
+
+        canvas.StrokeColor = Colors.Black;
+        canvas.StrokeSize = 4;
+        canvas.DrawCircle(0, 0, radius);
+
+        canvas.RestoreState();
     }
 }

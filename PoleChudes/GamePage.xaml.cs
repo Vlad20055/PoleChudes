@@ -4,14 +4,23 @@ namespace PoleChudes;
 
 public partial class GamePage : ContentPage
 {
+    private Game _game = new Game();
     private BarabanViewModel _barabanViewModel;
 
     public GamePage()
     {
         InitializeComponent();
-
         _barabanViewModel = new BarabanViewModel();
-        BarabanContainer.Content = new Baraban(_barabanViewModel);
+        // подписка на изменение угла
+        _barabanViewModel.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == nameof(BarabanViewModel.Angle))
+            {
+                _game.Baraban.Angle = (float)_barabanViewModel.Angle;
+                _game.Baraban.Invalidate();
+            }
+        };
+        BarabanContainer.Content = _game.Baraban;
     }
 
     private async void OnSpinClicked(object sender, EventArgs e)

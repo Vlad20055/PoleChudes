@@ -5,7 +5,7 @@ namespace PoleChudes
 {
     public class BarabanViewModel : INotifyPropertyChanged
     {
-        private double _angle;
+        private double _angle = 0;
         public double Angle
         {
             get => _angle;
