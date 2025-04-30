@@ -11,6 +11,7 @@ public partial class GamePage : ContentPage
     {
         InitializeComponent();
         _barabanViewModel = new BarabanViewModel();
+
         // подписка на изменение угла
         _barabanViewModel.PropertyChanged += (s, e) =>
         {
@@ -25,17 +26,18 @@ public partial class GamePage : ContentPage
 
     private async void OnSpinClicked(object sender, EventArgs e)
     {
-        // Анимация вращения барабана
         Random rand = new Random();
-        double targetAngle = _barabanViewModel.Angle + 360 * rand.Next(3, 6) + rand.Next(0, 360);
+        double targetAngle = _barabanViewModel.Angle + 360 * rand.Next(5, 9) + rand.Next(0, 360);
 
-        uint duration = 3000; // время анимации в миллисекундах
+        uint duration = 10000; // время анимации в миллисекундах
+        double startAngle = _barabanViewModel.Angle;
+        double delta = targetAngle - startAngle;
 
         await this.AnimateAsync(
             "Spin",
             (progress) =>
             {
-                _barabanViewModel.Angle = _barabanViewModel.Angle + (targetAngle - _barabanViewModel.Angle) * progress;
+                _barabanViewModel.Angle = startAngle + delta * progress;
             },
             16, duration, Easing.CubicOut
         );

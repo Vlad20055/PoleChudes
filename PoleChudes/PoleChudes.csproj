@@ -59,17 +59,29 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\1000.jpeg" />
+	  <MauiImage Remove="Resources\Images\500.jpeg" />
+	  <MauiImage Remove="Resources\Images\600.jpeg" />
+	  <MauiImage Remove="Resources\Images\700.jpeg" />
+	  <MauiImage Remove="Resources\Images\800.jpeg" />
+	  <MauiImage Remove="Resources\Images\bankrot.png" />
+	  <MauiImage Remove="Resources\Images\chest.png" />
 	  <MauiImage Remove="Resources\Images\dotnet_bot.png" />
-	  <MauiImage Remove="Resources\Images\sek1.avif" />
-	  <MauiImage Remove="Resources\Images\sek1.jpg" />
-	  <MauiImage Remove="Resources\Images\sek1.png" />
+	  <MauiImage Remove="Resources\Images\key.png" />
+	  <MauiImage Remove="Resources\Images\plus.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Images\1000.jpeg" />
+	  <EmbeddedResource Include="Resources\Images\500.jpeg" />
+	  <EmbeddedResource Include="Resources\Images\600.jpeg" />
+	  <EmbeddedResource Include="Resources\Images\700.jpeg" />
+	  <EmbeddedResource Include="Resources\Images\800.jpeg" />
+	  <EmbeddedResource Include="Resources\Images\bankrot.png" />
+	  <EmbeddedResource Include="Resources\Images\chest.png" />
 	  <EmbeddedResource Include="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
-	  <EmbeddedResource Include="Resources\Images\sek1.avif" />
-	  <EmbeddedResource Include="Resources\Images\sek1.jpg" />
-	  <EmbeddedResource Include="Resources\Images\sek1.png" />
+	  <EmbeddedResource Include="Resources\Images\key.png" />
+	  <EmbeddedResource Include="Resources\Images\plus.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
