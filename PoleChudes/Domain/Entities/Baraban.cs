@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
 using IImage = Microsoft.Maui.Graphics.IImage;
 using Microsoft.Maui.Graphics.Platform;
+using PoleChudes.Domain.ObjectsSD;
 
-namespace PoleChudes;
+namespace PoleChudes.Domain.Entities;
 
 public class Baraban : GraphicsView, IDrawable
 {
-    public float Angle { get; set; } = 0;
-
+    public BarabanSD BarabanSD { get; set; } = new BarabanSD();
     private readonly List<IImage?> _sectorImages = new();
 
     public Baraban()
@@ -15,7 +15,6 @@ public class Baraban : GraphicsView, IDrawable
         Drawable = this;
         LoadSectorImages();
     }
-
     private void LoadSectorImages()
     {
         IImage? image;
@@ -76,7 +75,6 @@ public class Baraban : GraphicsView, IDrawable
             _sectorImages.Add(image);
         }
     }
-
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
         canvas.SaveState();
@@ -86,7 +84,7 @@ public class Baraban : GraphicsView, IDrawable
         float radius = Math.Min(centerX, centerY) - 10;
 
         canvas.Translate(centerX, centerY);
-        canvas.Rotate(Angle);
+        canvas.Rotate(BarabanSD.Angle);
 
         int sectorCount = 9;
         float sectorAngle = 360f / sectorCount;

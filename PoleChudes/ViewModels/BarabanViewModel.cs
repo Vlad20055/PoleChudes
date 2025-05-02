@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace PoleChudes
+namespace PoleChudes.ViewModels
 {
     public class BarabanViewModel : INotifyPropertyChanged
     {

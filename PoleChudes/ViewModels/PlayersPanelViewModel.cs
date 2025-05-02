@@ -1,0 +1,17 @@
+﻿using PoleChudes.Domain.Entities;
+
+namespace PoleChudes.ViewModels;
+public class PlayersPanelViewModel
+{
+    public Player Player1 { get; } // AI Player
+    public Player Player2 { get; } // AI Player
+    public Player Player { get; }
+    
+    public PlayersPanelViewModel(Player player1, Player player2, Player player)
+    {
+        Player1 = player1;
+        Player2 = player2;
+        Player = player;
+    }
+}
+
