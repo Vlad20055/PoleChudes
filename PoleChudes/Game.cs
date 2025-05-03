@@ -13,4 +13,6 @@ public class Game
     public required GameTask GameTask;
     public required AnswerPanelManager AnswerPanelManager;
     public required AnswerPanel AnswerPanel;
+    public required LettersPanelManager LettersPanelManager;
+    public required LettersPanel LettersPanel;
 }

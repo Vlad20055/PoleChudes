@@ -7,6 +7,7 @@
 
     <VerticalStackLayout>
 
+        <!-- AnswerPanel -->
         <VerticalStackLayout
             x:Name="AnswerUnits"
             x:DataType="vm:AnswerPanelViewModel"
@@ -14,9 +15,10 @@
             Spacing="10">
 
             <HorizontalStackLayout
-              BindableLayout.ItemsSource="{Binding Units}"
-              Spacing="4"
-              HorizontalOptions="Center">
+                
+                BindableLayout.ItemsSource="{Binding Units}"
+                Spacing="4"
+                HorizontalOptions="Center">
 
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="vm:AnswerUnitViewModel">
@@ -29,15 +31,14 @@
                             VerticalOptions="Center">
 
                             <Label
-                              Text="{Binding DisplayLetter}"
-                              HorizontalOptions="Center"
-                              VerticalOptions="Center"
-                              TextColor="Black"/>
+                                Text="{Binding DisplayLetter}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                TextColor="Black"/>
                         </Border>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </HorizontalStackLayout>
-
         </VerticalStackLayout>
 
 
@@ -128,6 +129,7 @@
                 <!-- Прямоугольник с вопросом -->
                 <Border
                     x:Name="Question"
+                    x:DataType="vm:QuestionViewModel"
                     WidthRequest="500"
                     HeightRequest="200"
                     BackgroundColor="DarkSlateGray"
@@ -150,6 +152,42 @@
             
 
         </HorizontalStackLayout>
+
+        <!-- LettersPanel -->
+        <VerticalStackLayout
+            x:Name="LettersUnits"
+            Padding="20"
+            Spacing="20">
+
+            <!-- Панель букв: 11 столбцов, автоматом 3 строки при 33 буквах -->
+            <CollectionView
+                x:DataType="vm:LettersPanelViewModel"
+                ItemsSource="{Binding Units}"
+                SelectionMode="None"
+                WidthRequest="540"
+                HeightRequest="150">
+                <!-- 3 строки * (30+spacing) -->
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="11" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:LetterUnitViewModel">
+                        <Button
+                            Text="{Binding Letter}"
+                            BackgroundColor="{Binding Color}"
+                            IsEnabled="{Binding Enabled}"
+                            TextColor="Black"
+                            WidthRequest="30"
+                            HeightRequest="30"
+                            CornerRadius="4"
+                            Margin="2" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
 
     </VerticalStackLayout>
     

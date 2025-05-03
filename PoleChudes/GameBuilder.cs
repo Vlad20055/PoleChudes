@@ -23,6 +23,9 @@ public class GameBuilder
         // create AnswerPanel for game
         AnswerPanelManager answerPanelManager = new AnswerPanelManager(gameTask);
 
+        // create LettersPanel for game
+        LettersPanelManager lettersPanelManager = new LettersPanelManager();
+
 
         // create game with all their components
         Game game = new Game()
@@ -34,7 +37,9 @@ public class GameBuilder
             Player = player,
             GameTask = gameTask,
             AnswerPanelManager = answerPanelManager,
-            AnswerPanel = answerPanelManager.AnswerPanel
+            AnswerPanel = answerPanelManager.AnswerPanel,
+            LettersPanelManager = lettersPanelManager,
+            LettersPanel = lettersPanelManager.LettersPanel
         };
 
         return game;
