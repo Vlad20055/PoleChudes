@@ -89,6 +89,33 @@
                 HeightRequest="60"/>
             </VerticalStackLayout>
 
+            
+            <VerticalStackLayout>
+
+                <!-- Прямоугольник с вопросом -->
+                <Border
+                    x:Name="Question"
+                    WidthRequest="500"
+                    HeightRequest="200"
+                    BackgroundColor="DarkSlateGray"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="12"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Start">
+                    <ScrollView>
+                        <Label
+                            Text="{Binding Question}"
+                            TextColor="White"
+                            FontSize="18"
+                            LineBreakMode="WordWrap"
+                            VerticalOptions="Start" />
+                    </ScrollView>
+            </Border>
+            </VerticalStackLayout>
+            
+                
+            
+
         </HorizontalStackLayout>
 
     </VerticalStackLayout>

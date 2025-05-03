@@ -8,6 +8,7 @@ public partial class GamePage : ContentPage
     private Game _game;
 
     private PlayersViewModel _playersPanelViewModel;
+    private QuestionViewModel _questionViewModel;
 
     public GamePage()
     {
@@ -18,10 +19,12 @@ public partial class GamePage : ContentPage
 
         // create ViewModels
         _playersPanelViewModel = new PlayersViewModel(_game.Player1, _game.Player2, _game.Player);
+        _questionViewModel = new QuestionViewModel(_game.GameTask);
 
         // create dependences
         BarabanContainer.Content = _game.Baraban;
         PlayersPanel.BindingContext = _playersPanelViewModel;
+        Question.BindingContext = _questionViewModel;
     }
 
     private async void OnSpinClicked(object sender, EventArgs e)

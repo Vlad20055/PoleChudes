@@ -17,6 +17,10 @@ public class GameBuilder
         Player player2 = new Player(); // serialized
         Player player = new Player(); // serialized
 
+        // create task for game
+        GameTask gameTask = GameTaskManager.GetRandomTask(); // serialized
+
+
         // create game with all their components
         Game game = new Game()
         {
@@ -25,6 +29,7 @@ public class GameBuilder
             Player1 = player1,
             Player2 = player2,
             Player = player,
+            GameTask = gameTask
         };
 
         return game;
