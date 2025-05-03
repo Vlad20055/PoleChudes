@@ -20,6 +20,9 @@ public class GameBuilder
         // create task for game
         GameTask gameTask = GameTaskManager.GetRandomTask(); // serialized
 
+        // create AnswerPanel for game
+        AnswerPanelManager answerPanelManager = new AnswerPanelManager(gameTask);
+
 
         // create game with all their components
         Game game = new Game()
@@ -29,7 +32,9 @@ public class GameBuilder
             Player1 = player1,
             Player2 = player2,
             Player = player,
-            GameTask = gameTask
+            GameTask = gameTask,
+            AnswerPanelManager = answerPanelManager,
+            AnswerPanel = answerPanelManager.AnswerPanel
         };
 
         return game;
