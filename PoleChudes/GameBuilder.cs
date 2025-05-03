@@ -1,5 +1,6 @@
 ﻿using PoleChudes.Domain.Entities;
 using PoleChudes.Domain.ObjectsSD;
+using PoleChudes.UseCases;
 
 namespace PoleChudes;
 
@@ -8,19 +9,19 @@ public class GameBuilder
     public Game Build()
     {
         // create baraban for game
-        BarabanSD barabanSD = new BarabanSD();
-        Baraban baraban = new Baraban();
-        baraban.BarabanSD = barabanSD;
+        BarabanSD barabanSD = new BarabanSD(); // serialized
+        BarabanManager barabanManager = new BarabanManager(barabanSD);
 
         // create players for game
-        Player player1 = new Player();
-        Player player2 = new Player();
-        Player player = new Player();
+        Player player1 = new Player(); // serialized
+        Player player2 = new Player(); // serialized
+        Player player = new Player(); // serialized
 
         // create game with all their components
         Game game = new Game()
         {
-            Baraban = baraban,
+            barabanManager = barabanManager,
+            Baraban = barabanManager.Baraban,
             Player1 = player1,
             Player2 = player2,
             Player = player,
