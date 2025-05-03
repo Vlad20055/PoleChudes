@@ -2,6 +2,7 @@
 using IImage = Microsoft.Maui.Graphics.IImage;
 using Microsoft.Maui.Graphics.Platform;
 using PoleChudes.Domain.ObjectsSD;
+using System.ComponentModel;
 
 namespace PoleChudes.Domain.Entities;
 

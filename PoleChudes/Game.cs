@@ -1,4 +1,6 @@
-﻿namespace PoleChudes.Domain.Entities;
+﻿using PoleChudes.Domain.Entities;
+
+namespace PoleChudes;
 
 public class Game
 {
@@ -6,6 +8,4 @@ public class Game
     public required Player Player1;
     public required Player Player2;
     public required Player Player;
-
-
 }

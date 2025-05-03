@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PoleChudes.ViewModels"
+             x:Class="PoleChudes.GamePage"
+             Title="GamePage">
+
+    <VerticalStackLayout>
+
+        <HorizontalStackLayout Padding="20" Spacing="30" VerticalOptions="Center">
+
+            <!-- Players -->
+            <Grid
+                x:Name="PlayersPanel"
+                x:DataType="vm:PlayersViewModel"
+                WidthRequest="200"
+                RowSpacing="8"
+                ColumnSpacing="16"
+                VerticalOptions="Center">
+
+                <!-- Определяем строки: 1 заголовок + 3 игрока -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!-- Два столбца: имена и очки -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Заголовок -->
+                <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="Игроки"
+                FontAttributes="Bold"
+                FontSize="20" />
+
+                <!-- Игрок 1 -->
+                <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="{Binding Player1.Name}" />
+                <Label
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="{Binding Player1.Score, StringFormat='{}{0}'}" />
+
+                <!-- Игрок 2 -->
+                <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="{Binding Player2.Name}" />
+                <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="{Binding Player2.Score, StringFormat='{}{0}'}" />
+
+                <!-- Игрок -->
+                <Label
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="{Binding Player.Name}"
+                FontAttributes="Bold" />
+                <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="{Binding Player.Score, StringFormat='{}{0}'}"
+                FontAttributes="Bold" />
+
+            </Grid>
+
+            <!-- Baraban with button -->
+            <VerticalStackLayout Spacing="30" VerticalOptions="Center">
+                <ContentView x:Name="BarabanContainer"
+                     WidthRequest="300"
+                     HeightRequest="300"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center" />
+
+                <Button Text="Крутить"
+                Clicked="OnSpinClicked"
+                HorizontalOptions="Center"
+                WidthRequest="200"
+                HeightRequest="60"/>
+            </VerticalStackLayout>
+
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+    
+    
+
+    
+
+</ContentPage>

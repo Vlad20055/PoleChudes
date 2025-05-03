@@ -1,5 +1,4 @@
 using PoleChudes.Animation;
-using PoleChudes.Domain.Entities;
 using PoleChudes.ViewModels;
 
 namespace PoleChudes;
@@ -10,7 +9,7 @@ public partial class GamePage : ContentPage
     private Game _game;
 
     private BarabanViewModel _barabanViewModel;
-    private PlayersPanelViewModel _playersPanelViewModel;
+    private PlayersViewModel _playersPanelViewModel;
 
     public GamePage()
     {
@@ -19,11 +18,9 @@ public partial class GamePage : ContentPage
         // create _game
         _game = _gameBuilder.Build();
 
-
         // create ViewModels
         _barabanViewModel = new BarabanViewModel();
-        _playersPanelViewModel = new PlayersPanelViewModel(_game.Player1, _game.Player2, _game.Player);
-
+        _playersPanelViewModel = new PlayersViewModel(_game.Player1, _game.Player2, _game.Player);
 
         // create dependences
         // subscribing for angle changing
@@ -36,12 +33,14 @@ public partial class GamePage : ContentPage
             }
         };
         BarabanContainer.Content = _game.Baraban;
-        // PlayersPanelViewModel
+        // PlayersViewModel
         PlayersPanel.BindingContext = _playersPanelViewModel;
     }
 
     private async void OnSpinClicked(object sender, EventArgs e)
     {
+
+
         Random rand = new Random();
         double targetAngle = _barabanViewModel.Angle + 360 * rand.Next(5, 9) + rand.Next(0, 360);
 
