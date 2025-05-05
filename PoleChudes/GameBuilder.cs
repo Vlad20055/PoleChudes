@@ -1,6 +1,7 @@
 ﻿using PoleChudes.Domain.Entities;
 using PoleChudes.Domain.ObjectsSD;
 using PoleChudes.UseCases;
+using PoleChudes.UseCases.SectorHandlers;
 
 namespace PoleChudes;
 
@@ -28,12 +29,25 @@ public class GameBuilder
 
         // create presenter for game
         PresenterManager presenterManager = new PresenterManager();
+        Presenter presenter = presenterManager.Presenter;
 
+        // create SectorHandlers for game
+        SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenter);
+        SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenter);
+        SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenter);
+        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenter);
+        SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenter);
+        SectorHandlerInjector sectorHandlerInjector = new SectorHandlerInjector(
+            sectorBankrotHandler,
+            sectorKeyHandler,
+            sectorPlusHandler,
+            sectorPrizeHandler,
+            sectorScoreHandler);
 
         // create game with all their components
         Game game = new Game()
         {
-            barabanManager = barabanManager,
+            BarabanManager = barabanManager,
             Baraban = barabanManager.Baraban,
             Player1 = player1,
             Player2 = player2,
@@ -44,7 +58,9 @@ public class GameBuilder
             LettersPanelManager = lettersPanelManager,
             LettersPanel = lettersPanelManager.LettersPanel,
             PresenterManager = presenterManager,
-            Presenter = presenterManager.Presenter
+            Presenter = presenter,
+            SectorHandlerInjector = sectorHandlerInjector,
+            sectorHandler = sectorScoreHandler
         };
 
         return game;

@@ -36,8 +36,8 @@ public partial class GamePage : ContentPage
         PresenterBox.BindingContext = _presenterViewModel;
     }
 
-    private async void OnSpinClicked(object sender, EventArgs e)
+    private void OnSpinClicked(object sender, EventArgs e)
     {
-        await _game.barabanManager.RotateBaraban();
+        _game.PlayStep();
     }
 }

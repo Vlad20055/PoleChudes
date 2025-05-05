@@ -216,6 +216,8 @@
                     BackgroundColor="DarkSlateGray"
                     StrokeShape="RoundRectangle 8"
                     Padding="10"
+                    WidthRequest="200"
+                    HeightRequest="80"
                     HorizontalOptions="Fill">
 
                     <Label

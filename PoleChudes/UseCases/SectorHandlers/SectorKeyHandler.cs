@@ -1,6 +1,21 @@
-﻿namespace PoleChudes.UseCases.SectorHandlers;
+﻿using PoleChudes.Domain.Entities;
+using PoleChudes.Domain.Interfaces;
 
-public class SectorKeyHandler
+namespace PoleChudes.UseCases.SectorHandlers;
+
+public class SectorKeyHandler : ISectorHandler
 {
+    private Presenter _presenter;
 
+    public SectorKeyHandler(Presenter presenter)
+    {
+        _presenter = presenter;
+    }
+
+    public async void Handle()
+    {
+        _presenter.Message = "SectorKey";
+        await Task.Delay(1500);
+        _presenter.Message = string.Empty;
+    }
 }

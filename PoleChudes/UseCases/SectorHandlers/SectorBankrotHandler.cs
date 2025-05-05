@@ -1,5 +1,20 @@
-﻿namespace PoleChudes.UseCases.SectorHandlers;
+﻿using PoleChudes.Domain.Entities;
+using PoleChudes.Domain.Interfaces;
 
-public class SectorBankrotHandler
+namespace PoleChudes.UseCases.SectorHandlers;
+
+public class SectorBankrotHandler : ISectorHandler
 {
+    private Presenter _presenter;
+    public SectorBankrotHandler(Presenter presenter)
+    {
+        _presenter = presenter;
+    }
+
+    public async void Handle()
+    {
+        _presenter.Message = "SectorBankrot";
+        await Task.Delay(1500);
+        _presenter.Message = string.Empty;
+    }
 }
