@@ -26,6 +26,9 @@ public class GameBuilder
         // create LettersPanel for game
         LettersPanelManager lettersPanelManager = new LettersPanelManager();
 
+        // create presenter for game
+        PresenterManager presenterManager = new PresenterManager();
+
 
         // create game with all their components
         Game game = new Game()
@@ -39,7 +42,9 @@ public class GameBuilder
             AnswerPanelManager = answerPanelManager,
             AnswerPanel = answerPanelManager.AnswerPanel,
             LettersPanelManager = lettersPanelManager,
-            LettersPanel = lettersPanelManager.LettersPanel
+            LettersPanel = lettersPanelManager.LettersPanel,
+            PresenterManager = presenterManager,
+            Presenter = presenterManager.Presenter
         };
 
         return game;

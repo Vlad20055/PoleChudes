@@ -103,4 +103,12 @@ public class BarabanManager
         
         Baraban.Angle = (float)(target % 360);
     }
+    public int EvaluateCurrentSector()
+    {
+        float tempAngle = Baraban.Angle + 60f;
+        tempAngle %= 360;
+        int tempSector = (int)Math.Floor(tempAngle / 40);
+        return (8 - tempSector);
+    }
+
 }

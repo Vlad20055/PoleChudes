@@ -11,6 +11,7 @@ public partial class GamePage : ContentPage
     private QuestionViewModel _questionViewModel;
     private AnswerPanelViewModel _answerPanelViewModel;
     private LettersPanelViewModel _lettersPanelViewModel;
+    private PresenterViewModel _presenterViewModel;
 
     public GamePage()
     {
@@ -24,6 +25,7 @@ public partial class GamePage : ContentPage
         _questionViewModel = new QuestionViewModel(_game.GameTask);
         _answerPanelViewModel = new AnswerPanelViewModel(_game.AnswerPanel);
         _lettersPanelViewModel = new LettersPanelViewModel(_game.LettersPanel);
+        _presenterViewModel = new PresenterViewModel(_game.Presenter);
 
         // create dependences
         BarabanContainer.Content = _game.Baraban;
@@ -31,6 +33,7 @@ public partial class GamePage : ContentPage
         Question.BindingContext = _questionViewModel;
         AnswerUnits.BindingContext = _answerPanelViewModel;
         LettersUnits.BindingContext = _lettersPanelViewModel;
+        PresenterBox.BindingContext = _presenterViewModel;
     }
 
     private async void OnSpinClicked(object sender, EventArgs e)

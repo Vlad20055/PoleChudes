@@ -15,4 +15,6 @@ public class Game
     public required AnswerPanel AnswerPanel;
     public required LettersPanelManager LettersPanelManager;
     public required LettersPanel LettersPanel;
+    public required PresenterManager PresenterManager;
+    public required Presenter Presenter;
 }
