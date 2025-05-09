@@ -20,6 +20,8 @@ public class Game
     public required PresenterManager PresenterManager;
     public required Presenter Presenter;
     public required SectorHandlerInjector SectorHandlerInjector;
+    public required KeyPanelManager KeyPanelManager;
+    public required KeyPanel KeyPanel;
     public required ISectorHandler sectorHandler;
 
     public Player? CurrentPlayer;
@@ -64,6 +66,10 @@ public class Game
     public void UpdateScore(int scoreChanged)
     {
         if (CurrentPlayer != null) CurrentPlayer.Score += scoreChanged;
+    }
+    public void RemoveScore()
+    {
+        if (CurrentPlayer != null) CurrentPlayer.Score = 0;
     }
     
 }

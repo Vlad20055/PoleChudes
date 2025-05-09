@@ -27,13 +27,16 @@ public class GameBuilder
         // create LettersPanel for game
         LettersPanelManager lettersPanelManager = new LettersPanelManager();
 
+        // create KeyPanel for game
+        KeyPanelManager keyPanelManager = new KeyPanelManager();
+
         // create presenter for game
         PresenterManager presenterManager = new PresenterManager();
         Presenter presenter = presenterManager.Presenter;
 
         // create SectorHandlers for game
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
-        SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager);
+        SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager);
         SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager);
         SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager);
         SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenterManager, gameTask.Answer, answerPanelManager, lettersPanelManager);
@@ -43,6 +46,8 @@ public class GameBuilder
             sectorPlusHandler,
             sectorPrizeHandler,
             sectorScoreHandler);
+
+        
 
         // create game with all their components
         Game game = new Game()
@@ -61,6 +66,8 @@ public class GameBuilder
             Presenter = presenter,
             SectorHandlerInjector = sectorHandlerInjector,
             sectorHandler = sectorScoreHandler,
+            KeyPanelManager = keyPanelManager,
+            KeyPanel = keyPanelManager.KeyPanel,
         };
 
         configureCurrentPlayer(game);
@@ -68,7 +75,7 @@ public class GameBuilder
         // subscribe game for needed events
         sectorScoreHandler.ScoreChange += game.UpdateScore;
         sectorScoreHandler.PlayerChange += game.ChangePlayer;
-
+        sectorBankrotHandler.RemoveScore += game.RemoveScore;
         
 
         return game;

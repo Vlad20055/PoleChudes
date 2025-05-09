@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PoleChudes.ViewModels"
+             x:Class="PoleChudes.ContentViews.KeyPanel"
+             x:DataType="vm:KeyPanelViewModel"
+             BackgroundColor="#80000000"
+             IsVisible="{Binding IsVisible}">
+
+    <VerticalStackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Spacing="20" >
+
+        <Label Text="Выберите ключ"
+               FontSize="20"
+               TextColor="White"
+               HorizontalOptions="Center" />
+
+        <HorizontalStackLayout
+            BindableLayout.ItemsSource="{Binding Units}"
+            Spacing="20"
+            HeightRequest="160" >
+
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="vm:KeyUnitViewModel">
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <!-- Картинка-ключ -->
+                        <Image Source="key_for_panel.png"
+                               WidthRequest="60"
+                               HeightRequest="60"
+                               Scale="{Binding Scale}" />
+
+                        <!-- Кнопка выбора -->
+                        <Button Text="{Binding Number}"
+                                WidthRequest="60"
+                                Clicked="Key_Clicked"
+                                BackgroundColor="{Binding Color}" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentView>
+

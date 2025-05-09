@@ -27,6 +27,8 @@ public class SectorHandlerInjector
 
     public void InjectSectorHandler(ref ISectorHandler sectorHandler, int sectorNumber)
     {
+        //_sectorKeyHandler.Score = 1000;
+        //sectorHandler = _sectorKeyHandler;
         switch (sectorNumber)
         {
             case 0:
@@ -48,6 +50,7 @@ public class SectorHandlerInjector
                 sectorHandler = _sectorScoreHandler;
                 break;
             case 5:
+                _sectorKeyHandler.Score = 1000;
                 sectorHandler = _sectorKeyHandler;
                 break;
             case 6:

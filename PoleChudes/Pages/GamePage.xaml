@@ -3,247 +3,262 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PoleChudes.ViewModels"
              xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             xmlns:cv="clr-namespace:PoleChudes.ContentViews"
              x:Class="PoleChudes.GamePage"
              Title="GamePage">
 
-    <VerticalStackLayout>
-
-        <!-- AnswerPanel -->
+    <AbsoluteLayout>
         <VerticalStackLayout
-            x:Name="AnswerUnits"
-            x:DataType="vm:AnswerPanelViewModel"
-            Padding="20"
-            Spacing="10">
-
-            <HorizontalStackLayout
-                
-                BindableLayout.ItemsSource="{Binding Units}"
-                Spacing="4"
-                HorizontalOptions="Center">
-
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="vm:AnswerUnitViewModel">
-                        <Border
-                            BackgroundColor="LightGray"
-                            StrokeShape="RoundRectangle 4"
-                            WidthRequest="30"
-                            HeightRequest="30"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center">
-
-                            <Label
-                                Text="{Binding DisplayLetter}"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                TextColor="Black"/>
-                        </Border>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-
-
-        <HorizontalStackLayout Padding="20" Spacing="30" VerticalOptions="Center">
-
-            <!-- Players -->
-            <Grid
-                x:Name="PlayersPanel"
-                x:DataType="vm:PlayersViewModel"
-                WidthRequest="200"
-                RowSpacing="8"
-                ColumnSpacing="16"
-                VerticalOptions="Center">
-
-                <!-- Определяем строки: 1 заголовок + 3 игрока -->
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <!-- Два столбца: имена и очки -->
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <!-- Заголовок -->
-                <Label
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Text="Игроки"
-                FontAttributes="Bold"
-                FontSize="20" />
-
-                <!-- Игрок 1 -->
-                <Label
-                Grid.Row="1"
-                Grid.Column="0"
-                Text="{Binding Player1.Name}" />
-                <Label
-                Grid.Row="1"
-                Grid.Column="1"
-                Text="{Binding Player1.Score, StringFormat='{}{0}'}" />
-
-                <!-- Игрок 2 -->
-                <Label
-                Grid.Row="2"
-                Grid.Column="0"
-                Text="{Binding Player2.Name}" />
-                <Label
-                Grid.Row="2"
-                Grid.Column="1"
-                Text="{Binding Player2.Score, StringFormat='{}{0}'}" />
-
-                <!-- Игрок -->
-                <Label
-                Grid.Row="3"
-                Grid.Column="0"
-                Text="{Binding Player.Name}"
-                FontAttributes="Bold" />
-                <Label
-                Grid.Row="3"
-                Grid.Column="1"
-                Text="{Binding Player.Score, StringFormat='{}{0}'}"
-                FontAttributes="Bold" />
-
-            </Grid>
-
-            <!-- Baraban with button and arrow -->
-            <VerticalStackLayout Spacing="30" VerticalOptions="Center">
-
-                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
-                    <ContentView x:Name="BarabanContainer"
-                         WidthRequest="300"
-                         HeightRequest="300"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center" />
-
-                    <shapes:Polygon
-                        Points="40,0 0,10 40,20"
-                        Fill="Tomato"
-                        Stroke="Black"
-                        StrokeThickness="1"
-                        WidthRequest="40"
-                        HeightRequest="20"
-                        VerticalOptions="Center"
-                        Margin="-10,0,0,0" />
-
-                </HorizontalStackLayout>
-                
-                
-
-                <Button Text="Крутить"
-                Clicked="OnSpinClicked"
-                HorizontalOptions="Center"
-                WidthRequest="200"
-                HeightRequest="60"/>
-            </VerticalStackLayout>
-
-
-            <VerticalStackLayout>
-                <!-- Game question -->
-                <Border
-                    x:Name="Question"
-                    x:DataType="vm:QuestionViewModel"
-                    WidthRequest="500"
-                    HeightRequest="200"
-                    BackgroundColor="DarkSlateGray"
-                    StrokeShape="RoundRectangle 8"
-                    Padding="12"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Start">
-                    <ScrollView>
-                        <Label
-                            Text="{Binding Question}"
-                            TextColor="White"
-                            FontSize="18"
-                            LineBreakMode="WordWrap"
-                            VerticalOptions="Start" />
-                    </ScrollView>
-                </Border>
-            </VerticalStackLayout>
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
             
-                
             
 
-        </HorizontalStackLayout>
-
-
-        <HorizontalStackLayout>
-            <!-- LettersPanel -->
+            <!-- AnswerPanel -->
             <VerticalStackLayout
-                x:Name="LettersUnits"
-                Padding="20"
-                Spacing="20">
+        x:Name="AnswerUnits"
+        x:DataType="vm:AnswerPanelViewModel"
+        Padding="20"
+        Spacing="10">
 
-                <!-- Панель букв: 11 столбцов, автоматом 3 строки при 33 буквах -->
-                <CollectionView
-                    x:DataType="vm:LettersPanelViewModel"
-                    ItemsSource="{Binding Units}"
-                    SelectionMode="None"
-                    WidthRequest="540"
-                    HeightRequest="150">
-                    <!-- 3 строки * (30+spacing) -->
+                <HorizontalStackLayout
+            
+            BindableLayout.ItemsSource="{Binding Units}"
+            Spacing="4"
+            HorizontalOptions="Center">
 
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="11" />
-                    </CollectionView.ItemsLayout>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:AnswerUnitViewModel">
+                            <Border
+                        BackgroundColor="LightGray"
+                        StrokeShape="RoundRectangle 4"
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="vm:LetterUnitViewModel">
-                            <Button
-                                Text="{Binding Letter}"
-                                BackgroundColor="{Binding Color}"
-                                IsEnabled="{Binding Enabled}"
-                                TextColor="Black"
-                                WidthRequest="30"
-                                HeightRequest="30"
-                                CornerRadius="4"
-                                Margin="2" 
-                                Clicked="Letter_Clicked"/>
+                                <Label
+                            Text="{Binding DisplayLetter}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            TextColor="Black"/>
+                            </Border>
                         </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
 
-            <!-- Presenter -->
-            <VerticalStackLayout Spacing="8" HorizontalOptions="Center" x:DataType="vm:PresenterViewModel" x:Name="PresenterBox">
 
-                <!-- Сообщение ведущего в тёмном прямоугольнике -->
-                <Border
-                    BackgroundColor="DarkSlateGray"
-                    StrokeShape="RoundRectangle 8"
-                    Padding="10"
-                    WidthRequest="200"
-                    HeightRequest="80"
-                    HorizontalOptions="Fill">
+            <HorizontalStackLayout Padding="20" Spacing="30" VerticalOptions="Center">
 
+                <!-- Players -->
+                <Grid
+            x:Name="PlayersPanel"
+            x:DataType="vm:PlayersViewModel"
+            WidthRequest="200"
+            RowSpacing="8"
+            ColumnSpacing="16"
+            VerticalOptions="Center">
+
+                    <!-- Определяем строки: 1 заголовок + 3 игрока -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <!-- Два столбца: имена и очки -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Заголовок -->
                     <Label
-                        Text="{Binding Message}"
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Text="Игроки"
+            FontAttributes="Bold"
+            FontSize="20" />
+
+                    <!-- Игрок 1 -->
+                    <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="{Binding Player1.Name}" />
+                    <Label
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="{Binding Player1.Score, StringFormat='{}{0}'}" />
+
+                    <!-- Игрок 2 -->
+                    <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="{Binding Player2.Name}" />
+                    <Label
+            Grid.Row="2"
+            Grid.Column="1"
+            Text="{Binding Player2.Score, StringFormat='{}{0}'}" />
+
+                    <!-- Игрок -->
+                    <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Text="{Binding Player.Name}"
+            FontAttributes="Bold" />
+                    <Label
+            Grid.Row="3"
+            Grid.Column="1"
+            Text="{Binding Player.Score, StringFormat='{}{0}'}"
+            FontAttributes="Bold" />
+
+                </Grid>
+
+                <!-- Baraban with button and arrow -->
+                <VerticalStackLayout Spacing="30" VerticalOptions="Center">
+
+                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
+                        <ContentView x:Name="BarabanContainer"
+                     WidthRequest="300"
+                     HeightRequest="300"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center" />
+
+                        <shapes:Polygon
+                    Points="40,0 0,10 40,20"
+                    Fill="Tomato"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    WidthRequest="40"
+                    HeightRequest="20"
+                    VerticalOptions="Center"
+                    Margin="-10,0,0,0" />
+
+                    </HorizontalStackLayout>
+
+
+
+                    <Button Text="Крутить"
+            Clicked="OnSpinClicked"
+            HorizontalOptions="Center"
+            WidthRequest="200"
+            HeightRequest="60"/>
+                </VerticalStackLayout>
+
+                <!-- Game question -->
+                <VerticalStackLayout>
+                    <Border
+                x:Name="Question"
+                x:DataType="vm:QuestionViewModel"
+                WidthRequest="500"
+                HeightRequest="200"
+                BackgroundColor="DarkSlateGray"
+                StrokeShape="RoundRectangle 8"
+                Padding="12"
+                HorizontalOptions="Fill"
+                VerticalOptions="Start">
+                        <ScrollView>
+                            <Label
+                        Text="{Binding Question}"
                         TextColor="White"
                         FontSize="18"
-                        LineBreakMode="WordWrap" />
-                </Border>
-                
-                <!-- Картинка ведущего -->
-                <Image
-                    Source="{Binding Image}"
-                    WidthRequest="200"
-                    HeightRequest="200"
-                    Aspect="AspectFill"
-                    HorizontalOptions="Center" />
+                        LineBreakMode="WordWrap"
+                        VerticalOptions="Start" />
+                        </ScrollView>
+                    </Border>
+                </VerticalStackLayout>
 
-            </VerticalStackLayout>
 
-        </HorizontalStackLayout>
-        
-    </VerticalStackLayout>
+
+
+            </HorizontalStackLayout>
+
+
+            <HorizontalStackLayout>
+                <!-- LettersPanel -->
+                <VerticalStackLayout
+            x:Name="LettersUnits"
+            Padding="20"
+            Spacing="20">
+
+                    <!-- Панель букв: 11 столбцов, автоматом 3 строки при 33 буквах -->
+                    <CollectionView
+                x:DataType="vm:LettersPanelViewModel"
+                ItemsSource="{Binding Units}"
+                SelectionMode="None"
+                WidthRequest="540"
+                HeightRequest="150">
+                        <!-- 3 строки * (30+spacing) -->
+
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="11" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LetterUnitViewModel">
+                                <Button
+                            Text="{Binding Letter}"
+                            BackgroundColor="{Binding Color}"
+                            IsEnabled="{Binding Enabled}"
+                            TextColor="Black"
+                            WidthRequest="30"
+                            HeightRequest="30"
+                            CornerRadius="4"
+                            Margin="2" 
+                            Clicked="Letter_Clicked"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+
+                <!-- Presenter -->
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center" x:DataType="vm:PresenterViewModel" x:Name="PresenterBox">
+
+                    <!-- Сообщение ведущего в тёмном прямоугольнике -->
+                    <Border
+                BackgroundColor="DarkSlateGray"
+                StrokeShape="RoundRectangle 8"
+                Padding="10"
+                WidthRequest="200"
+                HeightRequest="80"
+                HorizontalOptions="Fill">
+
+                        <Label
+                    Text="{Binding Message}"
+                    TextColor="White"
+                    FontSize="18"
+                    LineBreakMode="WordWrap" />
+                    </Border>
+
+                    <!-- Картинка ведущего -->
+                    <Image
+                Source="{Binding Image}"
+                WidthRequest="200"
+                HeightRequest="200"
+                Aspect="AspectFill"
+                HorizontalOptions="Center" />
+
+                </VerticalStackLayout>
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+
+        <!-- Панель ключа поверх всего остального -->
+        <cv:KeyPanel
+            x:Name="KeyPanel"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All" />
+    </AbsoluteLayout>
+
     
     
 
-    
+
+
+
 
 </ContentPage>
