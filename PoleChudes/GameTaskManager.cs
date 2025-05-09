@@ -7,7 +7,7 @@ public class GameTaskManager
 {
     const string ResourceName = "PoleChudes.Resources.tasks.txt";
 
-    private static List<GameTask> LoadAllTasks()
+    public static List<GameTask> LoadAllTasks()
     {
         var tasks = new List<GameTask>();
         var asm = Assembly.GetExecutingAssembly();
