@@ -21,4 +21,18 @@ public class AnswerPanelManager
         return answerPanel;
     }
 
+    public int OpenLetter(char letter) // returns the number of opened letters
+    {
+        int numberOfOpenedLetters = 0;
+        foreach (var el in AnswerPanel.AnswerUnits)
+        {
+            if (el.Letter == letter)
+            {
+                el.IsOpened = true;
+                numberOfOpenedLetters++;
+            }
+        }
+        return numberOfOpenedLetters;
+    }
+
 }

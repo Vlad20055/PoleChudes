@@ -27,4 +27,10 @@ public class PresenterManager
         presenter.Image = _image;
         return presenter;
     }
+
+    public void SetMessage(string message)
+    {
+        Presenter.Message = message;
+    }
+
 }

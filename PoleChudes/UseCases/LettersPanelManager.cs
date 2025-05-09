@@ -21,4 +21,34 @@ public class LettersPanelManager
         }
         return lettersPanel;
     }
+
+    public void BlockPanel()
+    {
+        foreach (var el in LettersPanel.LetterUnits)
+        {
+            el.Enabled = false;
+        }
+    }
+
+    public void UnblockPanelAccordingToColors()
+    {
+        foreach (var el in LettersPanel.LetterUnits)
+        {
+            if (el.Color == "LightGray")
+            {
+                el.Enabled = true;
+            }
+        }
+    }
+
+    public void SetColor(char letter, string color)
+    {
+        foreach (var el in LettersPanel.LetterUnits)
+        {
+            if (el.Letter == letter)
+            {
+                el.Color = color;
+            }
+        }
+    }
 }

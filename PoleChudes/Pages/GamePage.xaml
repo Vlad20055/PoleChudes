@@ -143,7 +143,7 @@
 
 
             <VerticalStackLayout>
-                <!-- Прямоугольник с вопросом -->
+                <!-- Game question -->
                 <Border
                     x:Name="Question"
                     x:DataType="vm:QuestionViewModel"
@@ -201,7 +201,8 @@
                                 WidthRequest="30"
                                 HeightRequest="30"
                                 CornerRadius="4"
-                                Margin="2" />
+                                Margin="2" 
+                                Clicked="Letter_Clicked"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

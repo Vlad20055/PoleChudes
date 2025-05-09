@@ -5,17 +5,17 @@ namespace PoleChudes.UseCases.SectorHandlers;
 
 public class SectorKeyHandler : ISectorHandler
 {
-    private Presenter _presenter;
+    private PresenterManager _presenterManager;
 
-    public SectorKeyHandler(Presenter presenter)
+    public SectorKeyHandler(PresenterManager presenterManager)
     {
-        _presenter = presenter;
+        _presenterManager = presenterManager;
     }
 
     public async void Handle()
     {
-        _presenter.Message = "SectorKey";
+        _presenterManager.SetMessage("SectorKey");
         await Task.Delay(1500);
-        _presenter.Message = string.Empty;
+        _presenterManager.SetMessage(string.Empty);
     }
 }

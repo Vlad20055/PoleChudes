@@ -14,9 +14,9 @@ public class GameBuilder
         BarabanManager barabanManager = new BarabanManager(barabanSD);
 
         // create players for game
-        Player player1 = new Player(); // serialized
-        Player player2 = new Player(); // serialized
-        Player player = new Player(); // serialized
+        Player player = new Player(0, true); // serialized
+        Player player1 = new Player(1, false); // serialized
+        Player player2 = new Player(2, false); // serialized
 
         // create task for game
         GameTask gameTask = GameTaskManager.GetRandomTask(); // serialized
@@ -32,11 +32,11 @@ public class GameBuilder
         Presenter presenter = presenterManager.Presenter;
 
         // create SectorHandlers for game
-        SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenter);
-        SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenter);
-        SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenter);
-        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenter);
-        SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenter);
+        SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
+        SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager);
+        SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager);
+        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager);
+        SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenterManager, gameTask.Answer, answerPanelManager, lettersPanelManager);
         SectorHandlerInjector sectorHandlerInjector = new SectorHandlerInjector(
             sectorBankrotHandler,
             sectorKeyHandler,
@@ -60,9 +60,31 @@ public class GameBuilder
             PresenterManager = presenterManager,
             Presenter = presenter,
             SectorHandlerInjector = sectorHandlerInjector,
-            sectorHandler = sectorScoreHandler
+            sectorHandler = sectorScoreHandler,
         };
 
+        configureCurrentPlayer(game);
+
+        // subscribe game for needed events
+        sectorScoreHandler.ScoreChange += game.UpdateScore;
+        sectorScoreHandler.PlayerChange += game.ChangePlayer;
+
+        
+
         return game;
+    }
+
+    private void configureCurrentPlayer(Game game)
+    {
+        Player[] players = { game.Player, game.Player1, game.Player2 };
+        for (int i = 0; i < 3; ++i)
+        {
+            if (players[i].CurrentPlayer)
+            {
+                game.CurrentPlayer = players[i];
+                break;
+            }
+        }
+        if (game.CurrentPlayer == null) throw new Exception("Cannot find current player");
     }
 }

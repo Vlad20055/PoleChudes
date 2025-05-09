@@ -32,8 +32,20 @@ public class SectorHandlerInjector
             case 0:
                 sectorHandler = _sectorPlusHandler;
                 break;
+            case 1:
+                _sectorScoreHandler.Score = 700;
+                sectorHandler = _sectorScoreHandler;
+                break;
+            case 2:
+                _sectorScoreHandler.Score = 800;
+                sectorHandler = _sectorScoreHandler;
+                break;
             case 3:
                 sectorHandler = _sectorPrizeHandler;
+                break;
+            case 4:
+                _sectorScoreHandler.Score = 500;
+                sectorHandler = _sectorScoreHandler;
                 break;
             case 5:
                 sectorHandler = _sectorKeyHandler;
@@ -41,9 +53,16 @@ public class SectorHandlerInjector
             case 6:
                 sectorHandler = _sectorBankrotHandler;
                 break;
-            default:
+            case 7:
+                _sectorScoreHandler.Score = 1000;
                 sectorHandler = _sectorScoreHandler;
                 break;
+            case 8:
+                _sectorScoreHandler.Score = 600;
+                sectorHandler = _sectorScoreHandler;
+                break;
+            default:
+                throw new Exception("Cannot find current sector");
         }
     }
 }

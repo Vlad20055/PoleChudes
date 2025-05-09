@@ -5,16 +5,16 @@ namespace PoleChudes.UseCases.SectorHandlers;
 
 public class SectorBankrotHandler : ISectorHandler
 {
-    private Presenter _presenter;
-    public SectorBankrotHandler(Presenter presenter)
+    private PresenterManager _presenterManager;
+    public SectorBankrotHandler(PresenterManager presenterManager)
     {
-        _presenter = presenter;
+        _presenterManager = presenterManager;
     }
 
     public async void Handle()
     {
-        _presenter.Message = "SectorBankrot";
+        _presenterManager.SetMessage("SectorBankrot");
         await Task.Delay(1500);
-        _presenter.Message = string.Empty;
+        _presenterManager.SetMessage(string.Empty);
     }
 }
