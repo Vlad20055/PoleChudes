@@ -12,36 +12,34 @@
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All">
             
-            
-
             <!-- AnswerPanel -->
             <VerticalStackLayout
-        x:Name="AnswerUnits"
-        x:DataType="vm:AnswerPanelViewModel"
-        Padding="20"
-        Spacing="10">
+                x:Name="AnswerUnits"
+                x:DataType="vm:AnswerPanelViewModel"
+                Padding="20"
+                Spacing="10">
 
                 <HorizontalStackLayout
             
-            BindableLayout.ItemsSource="{Binding Units}"
-            Spacing="4"
-            HorizontalOptions="Center">
+                    BindableLayout.ItemsSource="{Binding Units}"
+                    Spacing="4"
+                    HorizontalOptions="Center">
 
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="vm:AnswerUnitViewModel">
                             <Border
-                        BackgroundColor="LightGray"
-                        StrokeShape="RoundRectangle 4"
-                        WidthRequest="30"
-                        HeightRequest="30"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center">
+                                BackgroundColor="LightGray"
+                                StrokeShape="RoundRectangle 4"
+                                WidthRequest="30"
+                                HeightRequest="30"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
 
                                 <Label
-                            Text="{Binding DisplayLetter}"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            TextColor="Black"/>
+                                    Text="{Binding DisplayLetter}"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    TextColor="Black"/>
                             </Border>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
@@ -53,12 +51,12 @@
 
                 <!-- Players -->
                 <Grid
-            x:Name="PlayersPanel"
-            x:DataType="vm:PlayersViewModel"
-            WidthRequest="200"
-            RowSpacing="8"
-            ColumnSpacing="16"
-            VerticalOptions="Center">
+                    x:Name="PlayersPanel"
+                    x:DataType="vm:PlayersViewModel"
+                    WidthRequest="200"
+                    RowSpacing="8"
+                    ColumnSpacing="16"
+                    VerticalOptions="Center">
 
                     <!-- Определяем строки: 1 заголовок + 3 игрока -->
                     <Grid.RowDefinitions>
@@ -75,44 +73,44 @@
 
                     <!-- Заголовок -->
                     <Label
-            Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Text="Игроки"
-            FontAttributes="Bold"
-            FontSize="20" />
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Text="Игроки"
+                        FontAttributes="Bold"
+                        FontSize="20" />
 
                     <!-- Игрок 1 -->
                     <Label
-            Grid.Row="1"
-            Grid.Column="0"
-            Text="{Binding Player1.Name}" />
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="{Binding Player1.Name}" />
                     <Label
-            Grid.Row="1"
-            Grid.Column="1"
-            Text="{Binding Player1.Score, StringFormat='{}{0}'}" />
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding Player1.Score, StringFormat='{}{0}'}" />
 
                     <!-- Игрок 2 -->
                     <Label
-            Grid.Row="2"
-            Grid.Column="0"
-            Text="{Binding Player2.Name}" />
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="{Binding Player2.Name}" />
                     <Label
-            Grid.Row="2"
-            Grid.Column="1"
-            Text="{Binding Player2.Score, StringFormat='{}{0}'}" />
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding Player2.Score, StringFormat='{}{0}'}" />
 
                     <!-- Игрок -->
                     <Label
-            Grid.Row="3"
-            Grid.Column="0"
-            Text="{Binding Player.Name}"
-            FontAttributes="Bold" />
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Text="{Binding Player.Name}"
+                        FontAttributes="Bold" />
                     <Label
-            Grid.Row="3"
-            Grid.Column="1"
-            Text="{Binding Player.Score, StringFormat='{}{0}'}"
-            FontAttributes="Bold" />
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Text="{Binding Player.Score, StringFormat='{}{0}'}"
+                        FontAttributes="Bold" />
 
                 </Grid>
 
@@ -120,21 +118,22 @@
                 <VerticalStackLayout Spacing="30" VerticalOptions="Center">
 
                     <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
-                        <ContentView x:Name="BarabanContainer"
-                     WidthRequest="300"
-                     HeightRequest="300"
-                     HorizontalOptions="Center"
-                     VerticalOptions="Center" />
+                        <ContentView
+                            x:Name="BarabanContainer"
+                            WidthRequest="300"
+                            HeightRequest="300"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
 
                         <shapes:Polygon
-                    Points="40,0 0,10 40,20"
-                    Fill="Tomato"
-                    Stroke="Black"
-                    StrokeThickness="1"
-                    WidthRequest="40"
-                    HeightRequest="20"
-                    VerticalOptions="Center"
-                    Margin="-10,0,0,0" />
+                            Points="40,0 0,10 40,20"
+                            Fill="Tomato"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            WidthRequest="40"
+                            HeightRequest="20"
+                            VerticalOptions="Center"
+                            Margin="-10,0,0,0" />
 
                     </HorizontalStackLayout>
 
@@ -150,22 +149,22 @@
                 <!-- Game question -->
                 <VerticalStackLayout>
                     <Border
-                x:Name="Question"
-                x:DataType="vm:QuestionViewModel"
-                WidthRequest="500"
-                HeightRequest="200"
-                BackgroundColor="DarkSlateGray"
-                StrokeShape="RoundRectangle 8"
-                Padding="12"
-                HorizontalOptions="Fill"
-                VerticalOptions="Start">
+                        x:Name="Question"
+                        x:DataType="vm:QuestionViewModel"
+                        WidthRequest="500"
+                        HeightRequest="200"
+                        BackgroundColor="DarkSlateGray"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="12"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start">
                         <ScrollView>
                             <Label
-                        Text="{Binding Question}"
-                        TextColor="White"
-                        FontSize="18"
-                        LineBreakMode="WordWrap"
-                        VerticalOptions="Start" />
+                                Text="{Binding Question}"
+                                TextColor="White"
+                                FontSize="18"
+                                LineBreakMode="WordWrap"
+                                VerticalOptions="Start" />
                         </ScrollView>
                     </Border>
                 </VerticalStackLayout>
@@ -179,17 +178,17 @@
             <HorizontalStackLayout>
                 <!-- LettersPanel -->
                 <VerticalStackLayout
-            x:Name="LettersUnits"
-            Padding="20"
-            Spacing="20">
+                    x:Name="LettersUnits"
+                    Padding="20"
+                    Spacing="20">
 
                     <!-- Панель букв: 11 столбцов, автоматом 3 строки при 33 буквах -->
                     <CollectionView
-                x:DataType="vm:LettersPanelViewModel"
-                ItemsSource="{Binding Units}"
-                SelectionMode="None"
-                WidthRequest="540"
-                HeightRequest="150">
+                        x:DataType="vm:LettersPanelViewModel"
+                        ItemsSource="{Binding Units}"
+                        SelectionMode="None"
+                        WidthRequest="540"
+                        HeightRequest="150">
                         <!-- 3 строки * (30+spacing) -->
 
                         <CollectionView.ItemsLayout>
@@ -219,27 +218,27 @@
 
                     <!-- Сообщение ведущего в тёмном прямоугольнике -->
                     <Border
-                BackgroundColor="DarkSlateGray"
-                StrokeShape="RoundRectangle 8"
-                Padding="10"
-                WidthRequest="200"
-                HeightRequest="80"
-                HorizontalOptions="Fill">
+                        BackgroundColor="DarkSlateGray"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="10"
+                        WidthRequest="200"
+                        HeightRequest="80"
+                        HorizontalOptions="Fill">
 
                         <Label
-                    Text="{Binding Message}"
-                    TextColor="White"
-                    FontSize="18"
-                    LineBreakMode="WordWrap" />
+                            Text="{Binding Message}"
+                            TextColor="White"
+                            FontSize="18"
+                            LineBreakMode="WordWrap" />
                     </Border>
 
                     <!-- Картинка ведущего -->
                     <Image
-                Source="{Binding Image}"
-                WidthRequest="200"
-                HeightRequest="200"
-                Aspect="AspectFill"
-                HorizontalOptions="Center" />
+                        Source="{Binding Image}"
+                        WidthRequest="200"
+                        HeightRequest="200"
+                        Aspect="AspectFill"
+                        HorizontalOptions="Center" />
 
                 </VerticalStackLayout>
 
@@ -250,6 +249,12 @@
         <!-- Панель ключа поверх всего остального -->
         <cv:KeyPanel
             x:Name="KeyPanel"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All" />
+
+        <!-- Панель плюса поверх всего остального -->
+        <cv:PlusPanel
+            x:Name="PlusPanel"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All" />
     </AbsoluteLayout>

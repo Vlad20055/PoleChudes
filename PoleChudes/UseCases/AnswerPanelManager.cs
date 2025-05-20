@@ -35,4 +35,22 @@ public class AnswerPanelManager
         return numberOfOpenedLetters;
     }
 
+    public void OpenLetter(int position)
+    {
+        char letter = AnswerPanel.AnswerUnits[position-1].Letter;
+        OpenLetter(letter);
+    }
+
+    public List<int> GetClosedLetters()
+    {
+        List<int> closedLetters = new List<int>();
+        
+        for (int i = 0; i <  AnswerPanel.AnswerUnits.Count; i++)
+        {
+            if (!AnswerPanel.AnswerUnits[i].IsOpened) closedLetters.Add(i+1);
+        }
+
+        return closedLetters;
+    }
+
 }

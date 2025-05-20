@@ -22,6 +22,8 @@ public class Game
     public required SectorHandlerInjector SectorHandlerInjector;
     public required KeyPanelManager KeyPanelManager;
     public required KeyPanel KeyPanel;
+    public required PlusPanelManager PlusPanelManager;
+    public required PlusPanel PlusPanel;
     public required ISectorHandler sectorHandler;
 
     public Player? CurrentPlayer;
