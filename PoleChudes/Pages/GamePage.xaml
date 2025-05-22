@@ -257,6 +257,13 @@
             x:Name="PlusPanel"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All" />
+
+        <!-- Панель приза поверх всего остального -->
+        <cv:PrizePanel
+            x:Name="PrizePanel"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All" />
+        
     </AbsoluteLayout>
 
     

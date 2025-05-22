@@ -33,6 +33,9 @@ public class GameBuilder
         // create PlusPanel for game
         PlusPanelManager plusPanelManager = new PlusPanelManager();
 
+        // create PrizePanel for game
+        PrizePanelManager prizePanelManager = new PrizePanelManager();
+
         // create presenter for game
         PresenterManager presenterManager = new PresenterManager();
         Presenter presenter = presenterManager.Presenter;
@@ -41,7 +44,7 @@ public class GameBuilder
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
         SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager);
         SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager, plusPanelManager, answerPanelManager);
-        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager);
+        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager, prizePanelManager);
         SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenterManager, gameTask.Answer, answerPanelManager, lettersPanelManager);
         SectorHandlerInjector sectorHandlerInjector = new SectorHandlerInjector(
             sectorBankrotHandler,
@@ -50,7 +53,7 @@ public class GameBuilder
             sectorPrizeHandler,
             sectorScoreHandler);
 
-        
+
 
         // create game with all their components
         Game game = new Game()
@@ -73,6 +76,8 @@ public class GameBuilder
             KeyPanel = keyPanelManager.KeyPanel,
             PlusPanelManager = plusPanelManager,
             PlusPanel = plusPanelManager.PlusPanel,
+            PrizePanelManager = prizePanelManager,
+            PrizePanel = prizePanelManager.PrizePanel,
         };
 
         configureCurrentPlayer(game);

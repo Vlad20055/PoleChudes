@@ -14,6 +14,7 @@ public partial class GamePage : ContentPage
     private PresenterViewModel _presenterViewModel;
     private KeyPanelViewModel _keyPanelViewModel;
     private PlusPanelViewModel _plusPanelViewModel;
+    private PrizePanelViewModel _prizePanelViewModel;
 
     public GamePage()
     {
@@ -30,6 +31,7 @@ public partial class GamePage : ContentPage
         _presenterViewModel = new PresenterViewModel(_game.Presenter);
         _keyPanelViewModel = new KeyPanelViewModel(_game.KeyPanel);
         _plusPanelViewModel = new PlusPanelViewModel(_game.PlusPanel);
+        _prizePanelViewModel = new PrizePanelViewModel(_game.PrizePanel);
 
         // create dependences
         BarabanContainer.Content = _game.Baraban;
@@ -40,19 +42,19 @@ public partial class GamePage : ContentPage
         PresenterBox.BindingContext = _presenterViewModel;
         KeyPanel.BindingContext = _keyPanelViewModel;
         PlusPanel.BindingContext = _plusPanelViewModel;
-
+        PrizePanel.BindingContext = _prizePanelViewModel;
 
         // subscribe on needed events
         KeyPanel.KeySelected += _game.KeyPanelManager.SelectKey;
         PlusPanel.PositionSelected += _game.PlusPanelManager.SelectPosition;
-
+        PrizePanel.PrizeSelected += _game.PrizePanelManager.ProcessPrizeSelected;
+        PrizePanel.MoneySelected += _game.PrizePanelManager.ProcessMoneySelected;
     }
 
     private void OnSpinClicked(object sender, EventArgs e)
     {
         _game.PlayStep();
     }
-
     private void Letter_Clicked(object sender, EventArgs e)
     {
         if (sender is Button button)

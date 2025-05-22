@@ -24,6 +24,8 @@ public class Game
     public required KeyPanel KeyPanel;
     public required PlusPanelManager PlusPanelManager;
     public required PlusPanel PlusPanel;
+    public required PrizePanelManager PrizePanelManager;
+    public required PrizePanel PrizePanel;
     public required ISectorHandler sectorHandler;
 
     public Player? CurrentPlayer;
