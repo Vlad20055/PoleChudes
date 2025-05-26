@@ -34,11 +34,11 @@ public partial class GamePage : ContentPage
         _prizePanelViewModel = new PrizePanelViewModel(_game.PrizePanel);
 
         // create dependences
-        BarabanContainer.Content = _game.Baraban;
+        BarabanPanel.BarabanContainer.Content = _game.Baraban;
         PlayersPanel.BindingContext = _playersPanelViewModel;
-        Question.BindingContext = _questionViewModel;
+        QuestionPanel.BindingContext = _questionViewModel;
         AnswerUnits.BindingContext = _answerPanelViewModel;
-        LettersUnits.BindingContext = _lettersPanelViewModel;
+        LettersPanel.BindingContext = _lettersPanelViewModel;
         PresenterBox.BindingContext = _presenterViewModel;
         KeyPanel.BindingContext = _keyPanelViewModel;
         PlusPanel.BindingContext = _plusPanelViewModel;
@@ -49,18 +49,20 @@ public partial class GamePage : ContentPage
         PlusPanel.PositionSelected += _game.PlusPanelManager.SelectPosition;
         PrizePanel.PrizeSelected += _game.PrizePanelManager.ProcessPrizeSelected;
         PrizePanel.MoneySelected += _game.PrizePanelManager.ProcessMoneySelected;
+        LettersPanel.LetterSelected += _game.ProcessChosenLetter;
+        BarabanPanel.SpinClicked += _game.PlayStep;
     }
 
-    private void OnSpinClicked(object sender, EventArgs e)
-    {
-        _game.PlayStep();
-    }
-    private void Letter_Clicked(object sender, EventArgs e)
-    {
-        if (sender is Button button)
-        {
-            char letter = button.Text[0];
-            _game.ProcessChosenLetter(letter);
-        }
-    }
+    //private void OnSpinClicked(object sender, EventArgs e)
+    //{
+    //    _game.PlayStep();
+    //}
+    //private void Letter_Clicked(object sender, EventArgs e)
+    //{
+    //    if (sender is Button button)
+    //    {
+    //        char letter = button.Text[0];
+    //        _game.ProcessChosenLetter(letter);
+    //    }
+    //}
 }

@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PoleChudes.ViewModels"
-             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
              xmlns:cv="clr-namespace:PoleChudes.ContentViews"
              x:Class="PoleChudes.GamePage"
              Title="GamePage">
@@ -47,7 +46,10 @@
             </VerticalStackLayout>
 
 
-            <HorizontalStackLayout Padding="20" Spacing="30" VerticalOptions="Center">
+            <HorizontalStackLayout
+                Padding="20"
+                Spacing="30"
+                VerticalOptions="Center">
 
                 <!-- Players -->
                 <Grid
@@ -114,134 +116,26 @@
 
                 </Grid>
 
+
                 <!-- Baraban with button and arrow -->
-                <VerticalStackLayout Spacing="30" VerticalOptions="Center">
-
-                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
-                        <ContentView
-                            x:Name="BarabanContainer"
-                            WidthRequest="300"
-                            HeightRequest="300"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center" />
-
-                        <shapes:Polygon
-                            Points="40,0 0,10 40,20"
-                            Fill="Tomato"
-                            Stroke="Black"
-                            StrokeThickness="1"
-                            WidthRequest="40"
-                            HeightRequest="20"
-                            VerticalOptions="Center"
-                            Margin="-10,0,0,0" />
-
-                    </HorizontalStackLayout>
-
-
-
-                    <Button Text="Крутить"
-            Clicked="OnSpinClicked"
-            HorizontalOptions="Center"
-            WidthRequest="200"
-            HeightRequest="60"/>
-                </VerticalStackLayout>
+                <cv:BarabanPanel
+                    x:Name="BarabanPanel"/>
 
                 <!-- Game question -->
-                <VerticalStackLayout>
-                    <Border
-                        x:Name="Question"
-                        x:DataType="vm:QuestionViewModel"
-                        WidthRequest="500"
-                        HeightRequest="200"
-                        BackgroundColor="DarkSlateGray"
-                        StrokeShape="RoundRectangle 8"
-                        Padding="12"
-                        HorizontalOptions="Fill"
-                        VerticalOptions="Start">
-                        <ScrollView>
-                            <Label
-                                Text="{Binding Question}"
-                                TextColor="White"
-                                FontSize="18"
-                                LineBreakMode="WordWrap"
-                                VerticalOptions="Start" />
-                        </ScrollView>
-                    </Border>
-                </VerticalStackLayout>
-
-
-
-
+                <cv:QuestionPanel
+                    x:Name="QuestionPanel"/>
+                
             </HorizontalStackLayout>
 
 
             <HorizontalStackLayout>
                 <!-- LettersPanel -->
-                <VerticalStackLayout
-                    x:Name="LettersUnits"
-                    Padding="20"
-                    Spacing="20">
-
-                    <!-- Панель букв: 11 столбцов, автоматом 3 строки при 33 буквах -->
-                    <CollectionView
-                        x:DataType="vm:LettersPanelViewModel"
-                        ItemsSource="{Binding Units}"
-                        SelectionMode="None"
-                        WidthRequest="540"
-                        HeightRequest="150">
-                        <!-- 3 строки * (30+spacing) -->
-
-                        <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical" Span="11" />
-                        </CollectionView.ItemsLayout>
-
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="vm:LetterUnitViewModel">
-                                <Button
-                            Text="{Binding Letter}"
-                            BackgroundColor="{Binding Color}"
-                            IsEnabled="{Binding Enabled}"
-                            TextColor="Black"
-                            WidthRequest="30"
-                            HeightRequest="30"
-                            CornerRadius="4"
-                            Margin="2" 
-                            Clicked="Letter_Clicked"/>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-
-                </VerticalStackLayout>
+                <cv:LettersPanel
+                    x:Name="LettersPanel"/>
 
                 <!-- Presenter -->
-                <VerticalStackLayout Spacing="8" HorizontalOptions="Center" x:DataType="vm:PresenterViewModel" x:Name="PresenterBox">
-
-                    <!-- Сообщение ведущего в тёмном прямоугольнике -->
-                    <Border
-                        BackgroundColor="DarkSlateGray"
-                        StrokeShape="RoundRectangle 8"
-                        Padding="10"
-                        WidthRequest="200"
-                        HeightRequest="80"
-                        HorizontalOptions="Fill">
-
-                        <Label
-                            Text="{Binding Message}"
-                            TextColor="White"
-                            FontSize="18"
-                            LineBreakMode="WordWrap" />
-                    </Border>
-
-                    <!-- Картинка ведущего -->
-                    <Image
-                        Source="{Binding Image}"
-                        WidthRequest="200"
-                        HeightRequest="200"
-                        Aspect="AspectFill"
-                        HorizontalOptions="Center" />
-
-                </VerticalStackLayout>
-
+                <cv:PresenterPanel
+                    x:Name="PresenterBox"/>
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
