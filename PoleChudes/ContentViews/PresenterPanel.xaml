@@ -14,7 +14,7 @@
             BackgroundColor="DarkSlateGray"
             StrokeShape="RoundRectangle 8"
             Padding="10"
-            WidthRequest="200"
+            WidthRequest="322"
             HeightRequest="80"
             HorizontalOptions="Fill">
 
@@ -28,8 +28,8 @@
         <!-- Картинка ведущего -->
         <Image
             Source="{Binding Image}"
-            WidthRequest="200"
-            HeightRequest="200"
+            WidthRequest="322"
+            HeightRequest="330"
             Aspect="AspectFill"
             HorizontalOptions="Center" />
     </VerticalStackLayout>

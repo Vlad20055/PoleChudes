@@ -7,49 +7,77 @@
              Title="GamePage">
 
     <AbsoluteLayout>
-        <VerticalStackLayout
+        <Grid
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All">
 
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="180" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="540" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
             <!-- AnswerPanel -->
             <cv:AnswerPanel
-                x:Name="AnswerUnits"/>
+                x:Name="AnswerUnits"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
 
+            <!-- Players -->
+            <cv:PlayersPanel
+                x:Name="PlayersPanel"
+                Grid.Row="2"
+                Grid.Column="0"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
 
+            <!-- Baraban with button and arrow -->
+            <cv:BarabanPanel
+                x:Name="BarabanPanel"
+                Grid.Row="2"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
 
-            <HorizontalStackLayout
-                Padding="20"
-                Spacing="30"
-                VerticalOptions="Center">
+            <!-- Game question -->
+            <cv:QuestionPanel
+                x:Name="QuestionPanel"
+                Grid.Row="1"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
 
-                <!-- Players -->
-                <cv:PlayersPanel
-                    x:Name="PlayersPanel"/>
+            <!-- LettersPanel -->
+            <cv:LettersPanel
+                x:Name="LettersPanel"
+                Grid.Row="4"
+                Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
 
+            <!-- Presenter -->
+            <cv:PresenterPanel
+                x:Name="PresenterBox"
+                Grid.Row="3"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
 
-
-                <!-- Baraban with button and arrow -->
-                <cv:BarabanPanel
-                    x:Name="BarabanPanel"/>
-
-                <!-- Game question -->
-                <cv:QuestionPanel
-                    x:Name="QuestionPanel"/>
-
-            </HorizontalStackLayout>
-
-
-            <HorizontalStackLayout>
-                <!-- LettersPanel -->
-                <cv:LettersPanel
-                    x:Name="LettersPanel"/>
-
-                <!-- Presenter -->
-                <cv:PresenterPanel
-                    x:Name="PresenterBox"/>
-            </HorizontalStackLayout>
-
-        </VerticalStackLayout>
+        </Grid>
 
         <!-- Панель ключа поверх всего остального -->
         <cv:KeyPanel
@@ -68,6 +96,5 @@
             x:Name="PrizePanel"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All" />
-
     </AbsoluteLayout>
 </ContentPage>
