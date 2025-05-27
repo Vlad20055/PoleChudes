@@ -1,5 +1,5 @@
-﻿using PoleChudes.Domain.Entities;
-using PoleChudes.ViewModels;
+﻿using Domain.Entities;
+using UI.ViewModels;
 
 namespace UnitTest;
 

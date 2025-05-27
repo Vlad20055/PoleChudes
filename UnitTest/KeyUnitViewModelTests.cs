@@ -1,6 +1,6 @@
-﻿using PoleChudes.Domain.Entities;
-using PoleChudes.UseCases;
-using PoleChudes.ViewModels;
+﻿using Domain.Entities;
+using Application.UseCases;
+using UI.ViewModels;
 
 namespace UnitTest;
 
