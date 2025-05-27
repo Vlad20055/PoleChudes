@@ -53,16 +53,4 @@ public partial class GamePage : ContentPage
         BarabanPanel.SpinClicked += _game.PlayStep;
     }
 
-    //private void OnSpinClicked(object sender, EventArgs e)
-    //{
-    //    _game.PlayStep();
-    //}
-    //private void Letter_Clicked(object sender, EventArgs e)
-    //{
-    //    if (sender is Button button)
-    //    {
-    //        char letter = button.Text[0];
-    //        _game.ProcessChosenLetter(letter);
-    //    }
-    //}
 }

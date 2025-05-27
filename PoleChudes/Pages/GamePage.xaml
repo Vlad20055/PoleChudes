@@ -10,40 +10,11 @@
         <VerticalStackLayout
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All">
-            
+
             <!-- AnswerPanel -->
-            <VerticalStackLayout
-                x:Name="AnswerUnits"
-                x:DataType="vm:AnswerPanelViewModel"
-                Padding="20"
-                Spacing="10">
+            <cv:AnswerPanel
+                x:Name="AnswerUnits"/>
 
-                <HorizontalStackLayout
-            
-                    BindableLayout.ItemsSource="{Binding Units}"
-                    Spacing="4"
-                    HorizontalOptions="Center">
-
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="vm:AnswerUnitViewModel">
-                            <Border
-                                BackgroundColor="LightGray"
-                                StrokeShape="RoundRectangle 4"
-                                WidthRequest="30"
-                                HeightRequest="30"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center">
-
-                                <Label
-                                    Text="{Binding DisplayLetter}"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center"
-                                    TextColor="Black"/>
-                            </Border>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
 
 
             <HorizontalStackLayout
@@ -52,69 +23,9 @@
                 VerticalOptions="Center">
 
                 <!-- Players -->
-                <Grid
-                    x:Name="PlayersPanel"
-                    x:DataType="vm:PlayersViewModel"
-                    WidthRequest="200"
-                    RowSpacing="8"
-                    ColumnSpacing="16"
-                    VerticalOptions="Center">
+                <cv:PlayersPanel
+                    x:Name="PlayersPanel"/>
 
-                    <!-- Определяем строки: 1 заголовок + 3 игрока -->
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <!-- Два столбца: имена и очки -->
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Заголовок -->
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Text="Игроки"
-                        FontAttributes="Bold"
-                        FontSize="20" />
-
-                    <!-- Игрок 1 -->
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Text="{Binding Player1.Name}" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Text="{Binding Player1.Score, StringFormat='{}{0}'}" />
-
-                    <!-- Игрок 2 -->
-                    <Label
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Text="{Binding Player2.Name}" />
-                    <Label
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Text="{Binding Player2.Score, StringFormat='{}{0}'}" />
-
-                    <!-- Игрок -->
-                    <Label
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Text="{Binding Player.Name}"
-                        FontAttributes="Bold" />
-                    <Label
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Text="{Binding Player.Score, StringFormat='{}{0}'}"
-                        FontAttributes="Bold" />
-
-                </Grid>
 
 
                 <!-- Baraban with button and arrow -->
@@ -124,7 +35,7 @@
                 <!-- Game question -->
                 <cv:QuestionPanel
                     x:Name="QuestionPanel"/>
-                
+
             </HorizontalStackLayout>
 
 
@@ -157,14 +68,6 @@
             x:Name="PrizePanel"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All" />
-        
+
     </AbsoluteLayout>
-
-    
-    
-
-
-
-
-
 </ContentPage>
