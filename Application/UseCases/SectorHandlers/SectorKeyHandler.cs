@@ -8,17 +8,23 @@ public class SectorKeyHandler : ISectorHandler
 {
     private PresenterManager _presenterManager;
     private KeyPanelManager _keyPanelManager;
+    private KeyChoicePanelManager _keyChoicePanelManager;
+    private PlayerManager? _playerManager = null;
 
-    public int? Score { get; set; } = null;
+    public event Action? SectorCompleted = null;
+    public event Action? PlayerChange = null;
+    public event Action? NeedToSetScoreHandler;
+
+    public void SetPlayerManager(PlayerManager playerManager) => _playerManager = playerManager;
 
     public SectorKeyHandler(
         PresenterManager presenterManager,
-        KeyPanelManager keyPanelManager)
+        KeyPanelManager keyPanelManager,
+        KeyChoicePanelManager keyChoicePanelManager)
     {
         _presenterManager = presenterManager;
         _keyPanelManager = keyPanelManager;
-
-        _keyPanelManager.KeySelected += processSelectedKey;
+        _keyChoicePanelManager = keyChoicePanelManager;
     }
 
     public async void Handle()
@@ -26,13 +32,50 @@ public class SectorKeyHandler : ISectorHandler
         _presenterManager.SetMessage("Сектор КЛЮЧ на барабане!\nХотите попробовать?");
         await Task.Delay(1500);
         _presenterManager.SetMessage(string.Empty);
-        _keyPanelManager.Enable();
-        // waiting for key selection
+
+        if (_playerManager is PlayerAIManager playerAIManager)
+        {
+            await Task.Delay(1000);
+            bool want = playerAIManager.WantTrySectorKey();
+            OnChoiceSelected(want);
+            return;
+        }
+
+        if (_playerManager is PlayerManager)
+        {
+            _keyChoicePanelManager.Enable();
+            return;
+        }
     }
 
-    private void processSelectedKey()
+    public async void OnChoiceSelected(bool want)
     {
-        // here UI has already updated
+        _keyChoicePanelManager.Disable();
+
+        if (want)
+        {
+            _keyPanelManager.Enable();
+            
+            if (_playerManager is PlayerAIManager playerAIManager)
+            {
+                await Task.Delay(1000);
+                char keyNumber = playerAIManager.SelectKey();
+                processSelectedKey(keyNumber);
+            }
+
+            if (_playerManager is PlayerManager) return;
+        }
+        else // говорим игре, что нужно поменять ISectorHandler на SectorScoreHandler
+        {
+            NeedToSetScoreHandler?.Invoke();
+        }
+    }
+
+    public void OnKeySelected(char keyNumber) => processSelectedKey(keyNumber);
+
+    private void processSelectedKey(char keyNumber)
+    {
+        _keyPanelManager.SelectKey(keyNumber);
         Random rnd = new Random();
         int temp = rnd.Next(0, 100);
         if (temp <= 100 / _keyPanelManager.KeyPanel.KeyUnits.Count) processCorrectKey();
@@ -45,6 +88,8 @@ public class SectorKeyHandler : ISectorHandler
         _keyPanelManager.SetDefaultState();
         _keyPanelManager.Disable();
         _presenterManager.SetMessage("Вращайте барабан.");
+        PlayerChange?.Invoke();
+        SectorCompleted?.Invoke();
     }
     private async void processIncorrectKey()
     {
@@ -53,5 +98,7 @@ public class SectorKeyHandler : ISectorHandler
         _keyPanelManager.SetDefaultState();
         _keyPanelManager.Disable();
         _presenterManager.SetMessage("Вращайте барабан.");
+        PlayerChange?.Invoke();
+        SectorCompleted?.Invoke();
     }
 }

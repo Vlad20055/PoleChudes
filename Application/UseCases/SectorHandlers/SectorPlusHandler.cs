@@ -1,5 +1,4 @@
 ﻿using Application.Managers;
-using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Application.UseCases.SectorHandlers;
@@ -10,6 +9,11 @@ public class SectorPlusHandler : ISectorHandler
     private PresenterManager _presenterManager;
     private PlusPanelManager _plusPanelManager;
     private AnswerPanelManager _answerPanelManager;
+    private PlayerManager? _playerManager = null;
+
+    public event Action? SectorCompleted = null;
+
+    public void SetPlayerManager(PlayerManager playerManager) => _playerManager = playerManager;
 
     public SectorPlusHandler(
         PresenterManager presenterManager,
@@ -19,7 +23,6 @@ public class SectorPlusHandler : ISectorHandler
         _presenterManager = presenterManager;
         _plusPanelManager = plusPanelManager;
         _answerPanelManager = answerPanelManager;
-        _plusPanelManager.PositionSelected += ProcessSelectedPosition;
     }
 
     public async void Handle()
@@ -28,9 +31,21 @@ public class SectorPlusHandler : ISectorHandler
         await Task.Delay(1500);
         _presenterManager.SetMessage(string.Empty);
         List<int> closedLetters = _answerPanelManager.GetClosedLetters();
-        _plusPanelManager.Enable();
-        _plusPanelManager.SetAvailablePositions(closedLetters);
-        // waiting for letter selection
+
+        if (_playerManager is PlayerAIManager playerAIManager)
+        {
+            await Task.Delay(1000);
+            int position = playerAIManager.SelectPosition(closedLetters);
+            ProcessSelectedPosition(position);
+            return;
+        }
+
+        if (_playerManager is PlayerManager)
+        {
+            _plusPanelManager.SetAvailablePositions(closedLetters);
+            _plusPanelManager.Enable();
+            return;
+        }
     }
 
     public async void ProcessSelectedPosition(int position)
@@ -40,5 +55,6 @@ public class SectorPlusHandler : ISectorHandler
         _presenterManager.SetMessage("Откройте!");
         await Task.Delay(1500);
         _presenterManager.SetMessage("Будете барабан вращать?");
+        SectorCompleted?.Invoke();
     }
 }

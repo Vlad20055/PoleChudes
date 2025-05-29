@@ -1,15 +1,16 @@
 ﻿using Domain.Interfaces;
 using Application.UseCases.SectorHandlers;
+using Application.Managers;
 
 namespace Application.UseCases;
 
 public class SectorHandlerInjector
 {
-    private readonly SectorBankrotHandler _sectorBankrotHandler;
-    private readonly SectorKeyHandler _sectorKeyHandler;
-    private readonly SectorPlusHandler _sectorPlusHandler;
-    private readonly SectorPrizeHandler _sectorPrizeHandler;
-    private readonly SectorScoreHandler _sectorScoreHandler;
+    public readonly SectorBankrotHandler SectorBankrotHandler;
+    public readonly SectorKeyHandler SectorKeyHandler;
+    public readonly SectorPlusHandler SectorPlusHandler;
+    public readonly SectorPrizeHandler SectorPrizeHandler;
+    public readonly SectorScoreHandler SectorScoreHandler;
 
     public SectorHandlerInjector(
         SectorBankrotHandler sectorBankrotHandler,
@@ -18,50 +19,57 @@ public class SectorHandlerInjector
         SectorPrizeHandler sectorPrizeHandler,
         SectorScoreHandler sectorScoreHandler)
     {
-        _sectorBankrotHandler = sectorBankrotHandler;
-        _sectorKeyHandler = sectorKeyHandler;
-        _sectorPlusHandler = sectorPlusHandler;
-        _sectorPrizeHandler = sectorPrizeHandler;
-        _sectorScoreHandler = sectorScoreHandler;
+        SectorBankrotHandler = sectorBankrotHandler;
+        SectorKeyHandler = sectorKeyHandler;
+        SectorPlusHandler = sectorPlusHandler;
+        SectorPrizeHandler = sectorPrizeHandler;
+        SectorScoreHandler = sectorScoreHandler;
     }
 
-    public void InjectSectorHandler(ref ISectorHandler sectorHandler, int sectorNumber)
+    public void InjectSectorHandler(ref ISectorHandler sectorHandler, int sectorNumber, PlayerManager playerManager)
     {
-        //sectorHandler = _sectorPrizeHandler;
         switch (sectorNumber)
         {
             case 0:
-                sectorHandler = _sectorPlusHandler;
+                SectorPlusHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorPlusHandler;
                 break;
             case 1:
-                _sectorScoreHandler.Score = 700;
-                sectorHandler = _sectorScoreHandler;
+                SectorScoreHandler.Score = 700;
+                SectorScoreHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorScoreHandler;
                 break;
             case 2:
-                _sectorScoreHandler.Score = 800;
-                sectorHandler = _sectorScoreHandler;
+                SectorScoreHandler.Score = 800;
+                SectorScoreHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorScoreHandler;
                 break;
             case 3:
-                sectorHandler = _sectorPrizeHandler;
+                SectorPrizeHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorPrizeHandler;
                 break;
             case 4:
-                _sectorScoreHandler.Score = 500;
-                sectorHandler = _sectorScoreHandler;
+                SectorScoreHandler.Score = 500;
+                SectorScoreHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorScoreHandler;
                 break;
             case 5:
-                _sectorKeyHandler.Score = 1000;
-                sectorHandler = _sectorKeyHandler;
+                SectorKeyHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorKeyHandler;
                 break;
             case 6:
-                sectorHandler = _sectorBankrotHandler;
+                SectorBankrotHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorBankrotHandler;
                 break;
             case 7:
-                _sectorScoreHandler.Score = 1000;
-                sectorHandler = _sectorScoreHandler;
+                SectorScoreHandler.Score = 1000;
+                SectorScoreHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorScoreHandler;
                 break;
             case 8:
-                _sectorScoreHandler.Score = 600;
-                sectorHandler = _sectorScoreHandler;
+                SectorScoreHandler.Score = 600;
+                SectorScoreHandler.SetPlayerManager(playerManager);
+                sectorHandler = SectorScoreHandler;
                 break;
             default:
                 throw new Exception("Cannot find current sector");

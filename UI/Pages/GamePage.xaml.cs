@@ -12,8 +12,10 @@ public partial class GamePage : ContentPage
     private AnswerPanelViewModel _answerPanelViewModel;
     private LettersPanelViewModel _lettersPanelViewModel;
     private PresenterViewModel _presenterViewModel;
+    private KeyChoicePanelViewModel _keyChoicePanelViewModel;
     private KeyPanelViewModel _keyPanelViewModel;
     private PlusPanelViewModel _plusPanelViewModel;
+    private PrizeChoicePanelViewModel _prizeChoicePanelViewModel;
     private PrizePanelViewModel _prizePanelViewModel;
     private BarabanViewModel _barabanViewModel;
 
@@ -30,8 +32,10 @@ public partial class GamePage : ContentPage
         _answerPanelViewModel = new AnswerPanelViewModel(_game.AnswerPanel);
         _lettersPanelViewModel = new LettersPanelViewModel(_game.LettersPanel);
         _presenterViewModel = new PresenterViewModel(_game.Presenter);
+        _keyChoicePanelViewModel = new KeyChoicePanelViewModel(_game.KeyChoicePanel);
         _keyPanelViewModel = new KeyPanelViewModel(_game.KeyPanel);
         _plusPanelViewModel = new PlusPanelViewModel(_game.PlusPanel);
+        _prizeChoicePanelViewModel = new PrizeChoicePanelViewModel(_game.PrizeChoicePanel);
         _prizePanelViewModel = new PrizePanelViewModel(_game.PrizePanel);
         _barabanViewModel = new BarabanViewModel(_game.Baraban);
 
@@ -42,16 +46,21 @@ public partial class GamePage : ContentPage
         AnswerUnits.BindingContext = _answerPanelViewModel;
         LettersPanel.BindingContext = _lettersPanelViewModel;
         PresenterBox.BindingContext = _presenterViewModel;
+        KeyChoicePanel.BindingContext = _keyChoicePanelViewModel;
         KeyPanel.BindingContext = _keyPanelViewModel;
         PlusPanel.BindingContext = _plusPanelViewModel;
+        PrizeChoicePanel.BindingContext = _prizeChoicePanelViewModel;
         PrizePanel.BindingContext = _prizePanelViewModel;
 
         // subscribe on needed events
-        KeyPanel.KeySelected += _game.KeyPanelManager.SelectKey;
-        PlusPanel.PositionSelected += _game.PlusPanelManager.SelectPosition;
-        PrizePanel.PrizeSelected += _game.PrizePanelManager.ProcessPrizeSelected;
-        PrizePanel.MoneySelected += _game.PrizePanelManager.ProcessMoneySelected;
-        LettersPanel.LetterSelected += _game.ProcessChosenLetter;
+        KeyChoicePanel.Chosen += _game.SectorHandlerInjector.SectorKeyHandler.OnChoiceSelected;
+        KeyPanel.KeySelected += _game.SectorHandlerInjector.SectorKeyHandler.OnKeySelected;
+        PlusPanel.PositionSelected += _game.SectorHandlerInjector.SectorPlusHandler.ProcessSelectedPosition;
+        PrizeChoicePanel.Chosen += _game.SectorHandlerInjector.SectorPrizeHandler.OnChoiceSelected;
+        PrizePanel.PrizeSelected += _game.SectorHandlerInjector.SectorPrizeHandler.ProcessPrizeSelected;
+        PrizePanel.MoneySelected += _game.SectorHandlerInjector.SectorPrizeHandler.ProcessMoneySelected;
+        LettersPanel.LetterSelected += _game.SectorHandlerInjector.SectorScoreHandler.ProcessChosenLetter;
+        _game.BarabanManager.StartRotation += _barabanViewModel.RotateAsync;
         BarabanPanel.SpinClicked += _barabanViewModel.RotateAsync;
         _barabanViewModel.RotationCompleted += _game.PlayStep;
     }

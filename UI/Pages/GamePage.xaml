@@ -84,6 +84,12 @@
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All" />
 
+        <!-- Панель выбора ключ/игра поверх всего остального -->
+        <cv:KeyChoicePanel
+            x:Name="KeyChoicePanel"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All" />
+
         <!-- Панель плюса поверх всего остального -->
         <cv:PlusPanel
             x:Name="PlusPanel"
@@ -93,6 +99,12 @@
         <!-- Панель приза поверх всего остального -->
         <cv:PrizePanel
             x:Name="PrizePanel"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All" />
+
+        <!-- Панель выбора приз/игра поверх всего остального -->
+        <cv:PrizeChoicePanel
+            x:Name="PrizeChoicePanel"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All" />
     </AbsoluteLayout>

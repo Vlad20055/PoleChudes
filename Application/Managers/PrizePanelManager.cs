@@ -5,8 +5,6 @@ namespace Application.Managers;
 public class PrizePanelManager
 {
     public PrizePanel PrizePanel = new PrizePanel();
-    public event Action? PrizeSelected;
-    public event Action? MoneySelected;
 
     public void EnableButtons() => PrizePanel.AreButtonsVisible = true;
     public void DisableButtons() => PrizePanel.AreButtonsVisible = false;
@@ -20,13 +18,4 @@ public class PrizePanelManager
     {
         PrizePanel.SelectedPrize = null;
     }
-    public void ProcessPrizeSelected()
-    {
-        PrizeSelected?.Invoke();
-    }
-    public void ProcessMoneySelected()
-    {
-        MoneySelected?.Invoke();
-    }
-
 }

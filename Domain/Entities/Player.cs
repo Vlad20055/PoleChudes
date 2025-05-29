@@ -12,7 +12,7 @@ public class Player : INotifyPropertyChanged
     public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
     public int Score { get => _score; set { _score = value; OnPropertyChanged(); } }
     public int NumberOfRightClaimedLetters { get; set; } = 0;
-    public bool Active { get; set; } = false;
+    public bool Active { get; set; } = true;
     public bool CurrentPlayer { get; set; } = false;
 
     public Player(int id, bool isCurrentPlayer)

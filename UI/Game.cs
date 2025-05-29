@@ -1,8 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-using Application.UseCases;
-using Application.UseCases.SectorHandlers;
 using Application.Managers;
+using Application.UseCases;
 
 namespace UI;
 
@@ -13,6 +12,8 @@ public class Game
     public required Player Player1;
     public required Player Player2;
     public required Player Player;
+    public required PlayerManager PlayerManager;
+    public required PlayerAIManager PlayerAIManager;
     public required GameTask GameTask;
     public required AnswerPanelManager AnswerPanelManager;
     public required AnswerPanel AnswerPanel;
@@ -21,27 +22,49 @@ public class Game
     public required PresenterManager PresenterManager;
     public required Presenter Presenter;
     public required SectorHandlerInjector SectorHandlerInjector;
+    public required KeyChoicePanelManager KeyChoicePanelManager;
+    public required KeyChoicePanel KeyChoicePanel;
     public required KeyPanelManager KeyPanelManager;
     public required KeyPanel KeyPanel;
     public required PlusPanelManager PlusPanelManager;
     public required PlusPanel PlusPanel;
+    public required PrizeChoicePanelManager PrizeChoicePanelManager;
+    public required PrizeChoicePanel PrizeChoicePanel;
     public required PrizePanelManager PrizePanelManager;
     public required PrizePanel PrizePanel;
     public required ISectorHandler sectorHandler;
 
     public Player? CurrentPlayer;
 
+    public void ContinueGame()
+    {
+        if (CurrentPlayer == Player) return;
+        else
+        {
+            BarabanManager.RotateBaraban();
+        }
+    }
 
     public void PlayStep()
     {
-        //await BarabanManager.RotateBaraban();
-        SectorHandlerInjector.InjectSectorHandler(ref sectorHandler, BarabanManager.EvaluateCurrentSector());
+        PlayerManager manager;
+        if (CurrentPlayer == Player) manager = PlayerManager;
+        else manager = PlayerAIManager;
+        if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
+        SectorHandlerInjector.InjectSectorHandler(ref sectorHandler, BarabanManager.EvaluateCurrentSector(), manager);
         sectorHandler.Handle();
     }
-    public void ProcessChosenLetter(char letter)
+
+    public void PlaySectorMaxScoreHandler()
     {
-        if (sectorHandler is SectorScoreHandler handler) handler.ProcessChosenLetter(letter);
+        PlayerManager manager;
+        if (CurrentPlayer == Player) manager = PlayerManager;
+        else manager = PlayerAIManager;
+        if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
+        SectorHandlerInjector.InjectSectorHandler(ref sectorHandler, 7, manager); // Score = 1000
+        sectorHandler.Handle();
     }
+
     public void ChangePlayer() // it is considered that it is possible to change current player correctly
     {
         int currentPlayerId = 0;
@@ -68,13 +91,4 @@ public class Game
             }
         }
     }
-    public void UpdateScore(int scoreChanged)
-    {
-        if (CurrentPlayer != null) CurrentPlayer.Score += scoreChanged;
-    }
-    public void RemoveScore()
-    {
-        if (CurrentPlayer != null) CurrentPlayer.Score = 0;
-    }
-    
 }

@@ -4,8 +4,6 @@ namespace Application.Managers;
 
 public class PlusPanelManager
 {
-
-    public event Action<int>? PositionSelected;
     public PlusPanel PlusPanel { get; set; } = new PlusPanel();
 
     public void Enable()
@@ -22,11 +20,4 @@ public class PlusPanelManager
     {
         PlusPanel.AvailablePositions = positions;
     }
-
-    public void SelectPosition(int position)
-    {
-        PositionSelected?.Invoke(position);
-    }
-
-
 }

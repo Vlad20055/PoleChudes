@@ -5,7 +5,6 @@ namespace Application.Managers;
 public class KeyPanelManager
 {
     public KeyPanel KeyPanel { get; set; }
-    public event Action? KeySelected;
 
     public KeyPanelManager()
     {
@@ -23,7 +22,6 @@ public class KeyPanelManager
                 break;
             }
         }
-        KeySelected?.Invoke();
     }
 
     public KeyPanel ConstructKeyPanel()

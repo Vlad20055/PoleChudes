@@ -17,6 +17,8 @@ public class GameBuilder
         Player player = new Player(0, true); // serialized
         Player player1 = new Player(1, false); // serialized
         Player player2 = new Player(2, false); // serialized
+        PlayerManager playerManager = new PlayerManager();
+        PlayerAIManager playerAIManager = new PlayerAIManager();
 
         // create task for game
         GameTask gameTask = GameTaskManager.GetRandomTask(); // serialized
@@ -40,11 +42,19 @@ public class GameBuilder
         Presenter presenter = new Presenter();
         PresenterManager presenterManager = new PresenterManager(presenter);
 
+        // create KeyChoicePanel for game
+        KeyChoicePanel keyChoicePanel = new KeyChoicePanel();
+        KeyChoicePanelManager keyChoicePanelManager = new KeyChoicePanelManager(keyChoicePanel);
+
+        // create PrizeChoicePanel for game
+        PrizeChoicePanel prizeChoicePanel = new PrizeChoicePanel();
+        PrizeChoicePanelManager prizeChoicePanelManager = new PrizeChoicePanelManager(prizeChoicePanel);
+
         // create SectorHandlers for game
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
-        SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager);
+        SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager, keyChoicePanelManager);
         SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager, plusPanelManager, answerPanelManager);
-        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager, prizePanelManager);
+        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager, prizePanelManager, prizeChoicePanelManager);
         SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenterManager, gameTask.Answer, answerPanelManager, lettersPanelManager);
         SectorHandlerInjector sectorHandlerInjector = new SectorHandlerInjector(
             sectorBankrotHandler,
@@ -63,6 +73,8 @@ public class GameBuilder
             Player1 = player1,
             Player2 = player2,
             Player = player,
+            PlayerManager = playerManager,
+            PlayerAIManager = playerAIManager,
             GameTask = gameTask,
             AnswerPanelManager = answerPanelManager,
             AnswerPanel = answerPanelManager.AnswerPanel,
@@ -72,10 +84,14 @@ public class GameBuilder
             Presenter = presenter,
             SectorHandlerInjector = sectorHandlerInjector,
             sectorHandler = sectorScoreHandler,
+            KeyChoicePanelManager = keyChoicePanelManager,
+            KeyChoicePanel = keyChoicePanel,
             KeyPanelManager = keyPanelManager,
             KeyPanel = keyPanelManager.KeyPanel,
             PlusPanelManager = plusPanelManager,
             PlusPanel = plusPanelManager.PlusPanel,
+            PrizeChoicePanelManager = prizeChoicePanelManager,
+            PrizeChoicePanel = prizeChoicePanel,
             PrizePanelManager = prizePanelManager,
             PrizePanel = prizePanelManager.PrizePanel,
         };
@@ -83,10 +99,18 @@ public class GameBuilder
         configureCurrentPlayer(game);
 
         // subscribe game for needed events
-        sectorScoreHandler.ScoreChange += game.UpdateScore;
         sectorScoreHandler.PlayerChange += game.ChangePlayer;
-        sectorBankrotHandler.RemoveScore += game.RemoveScore;
-        
+        sectorBankrotHandler.PlayerChange += game.ChangePlayer;
+        sectorKeyHandler.PlayerChange += game.ChangePlayer;
+        sectorPrizeHandler.PlayerChange += game.ChangePlayer;
+        sectorKeyHandler.NeedToSetScoreHandler += game.PlaySectorMaxScoreHandler;
+        sectorPrizeHandler.NeedToSetScoreHandler += game.PlaySectorMaxScoreHandler;
+
+        sectorScoreHandler.SectorCompleted += game.ContinueGame;
+        sectorPrizeHandler.SectorCompleted += game.ContinueGame;
+        sectorPlusHandler.SectorCompleted += game.ContinueGame;
+        sectorKeyHandler.SectorCompleted += game.ContinueGame;
+        sectorBankrotHandler.SectorCompleted += game.ContinueGame;
 
         return game;
     }

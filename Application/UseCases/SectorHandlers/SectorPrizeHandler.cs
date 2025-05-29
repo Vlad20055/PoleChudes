@@ -7,7 +7,10 @@ namespace Application.UseCases.SectorHandlers;
 public class SectorPrizeHandler : ISectorHandler
 {
     private PresenterManager _presenterManager;
+    private PrizeChoicePanelManager _prizeChoicePanelManager;
     private PrizePanelManager _prizePanelManager;
+    private PlayerManager? _playerManager = null;
+    public event Action? NeedToSetScoreHandler;
     private int currentMoneySujjestion = 700;
     private int numberOfMoneySujjestions = 0;
     private int maxNumberOfMoneySujjestions = 4;
@@ -19,14 +22,20 @@ public class SectorPrizeHandler : ISectorHandler
     };
     private Prize _moneyPrize = new Prize() { Id = 0, Name = "Деньги", PrizeImage = "money.jpg" };
 
+    public event Action? SectorCompleted = null;
+    public event Action? PlayerChange = null;
 
-    public SectorPrizeHandler(PresenterManager presenterManager, PrizePanelManager prizePanelManager)
+    public void SetPlayerManager(PlayerManager playerManager) => _playerManager = playerManager;
+
+
+    public SectorPrizeHandler(
+        PresenterManager presenterManager,
+        PrizePanelManager prizePanelManager,
+        PrizeChoicePanelManager prizeChoicePanelManager)
     {
         _presenterManager = presenterManager;
         _prizePanelManager = prizePanelManager;
-
-        _prizePanelManager.PrizeSelected += ProcessPrizeSelected;
-        _prizePanelManager.MoneySelected += ProcessMoneySelected;
+        _prizeChoicePanelManager = prizeChoicePanelManager;
     }
     public async void Handle()
     {
@@ -34,10 +43,55 @@ public class SectorPrizeHandler : ISectorHandler
         await Task.Delay(1500);
         _presenterManager.SetMessage(string.Empty);
         numberOfMoneySujjestions = 0;
-        _prizePanelManager.Enable();
-        _prizePanelManager.EnableButtons();
-        SujjestMoney();
-        // waiting for player's choice
+
+        if (_playerManager is PlayerAIManager playerAIManager)
+        {
+            await Task.Delay(1000);
+            bool want = playerAIManager.WantTrySectorPrize();
+            return;
+        }
+
+        if (_playerManager is PlayerManager)
+        {
+            _prizeChoicePanelManager.Enable();
+            return;
+        }
+    }
+
+    public async void OnChoiceSelected(bool want)
+    {
+        _prizeChoicePanelManager.Disable();
+
+        if (want)
+        {
+            
+
+            if (_playerManager is PlayerAIManager playerAIManager)
+            {
+                await Task.Delay(1000);
+                string choice = playerAIManager.SelectPrizeOrMoney();
+                if (choice == "prize")
+                {
+                    ProcessPrizeSelected();
+                }
+                else if (choice == "money")
+                {
+                    ProcessMoneySelected();
+                }
+            }
+
+            if (_playerManager is PlayerManager)
+            {
+                _prizePanelManager.Enable();
+                _prizePanelManager.EnableButtons();
+                SujjestMoney();
+                return;
+            }
+        }
+        else // говорим игре, что нужно поменять ISectorHandler на SectorScoreHandler
+        {
+            NeedToSetScoreHandler?.Invoke();
+        }
     }
 
     public async void ProcessPrizeSelected()
@@ -53,7 +107,10 @@ public class SectorPrizeHandler : ISectorHandler
             await Task.Delay(1500);
             _prizePanelManager.RemovePrize();
             _prizePanelManager.Disable();
+            if (_playerManager != null) _playerManager.RemovePlayer(); // удаляем текущего игрока
             _presenterManager.SetMessage("Враащйте барабан!");
+            PlayerChange?.Invoke();
+            SectorCompleted?.Invoke();
         }
         else // иначе предлагаем больше денег
         {
@@ -70,7 +127,10 @@ public class SectorPrizeHandler : ISectorHandler
         await Task.Delay(1500);
         _prizePanelManager.RemovePrize();
         _prizePanelManager.Disable();
-        _presenterManager.SetMessage("Враащйте барабан!");
+        if (_playerManager != null) _playerManager.RemovePlayer(); // удаляем текущего игрока
+        _presenterManager.SetMessage("Вращайте барабан!");
+        PlayerChange?.Invoke();
+        SectorCompleted?.Invoke();
     }
 
     public void RevealPrize()
@@ -82,12 +142,30 @@ public class SectorPrizeHandler : ISectorHandler
         _prizePanelManager.SetPrize(randomPrize);
     }
 
-    private void SujjestMoney()
+    private async void SujjestMoney()
     {
         Random random = new Random();
         int newSujjestion = random.Next((int)(currentMoneySujjestion * 1.2), (int)(currentMoneySujjestion * 1.4));
         currentMoneySujjestion = newSujjestion;
         _presenterManager.SetMessage($"Я предлагаю вам {currentMoneySujjestion} рублей и мы не открываем приз.");
-        // waiting for players choice
+
+        
+
+        if (_playerManager is PlayerAIManager playerAIManager)
+        {
+            await Task.Delay(1000);
+            string choice = playerAIManager.SelectPrizeOrMoney();
+            if (choice == "prize")
+            {
+                ProcessPrizeSelected();
+            }
+            else if (choice == "money")
+            {
+                ProcessMoneySelected();
+            }
+            return;
+        }
+
+        if (_playerManager is PlayerManager) return;
     }
 }

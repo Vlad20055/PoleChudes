@@ -5,7 +5,8 @@ namespace Application.Managers;
 public class BarabanManager
 {
     private Baraban _baraban { get; set; }
-    //private List<IImage?> _sectorImages = new();
+
+    public event Action? StartRotation;
 
     public BarabanManager(Baraban baraban)
     {
@@ -19,4 +20,5 @@ public class BarabanManager
         return 8 - tempSector;
     }
 
+    public void RotateBaraban() => StartRotation?.Invoke();
 }
