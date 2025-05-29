@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Application.UseCases;
 using Application.UseCases.SectorHandlers;
+using Application.Managers;
 
 namespace UI;
 

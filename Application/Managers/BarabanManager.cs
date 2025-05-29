@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.UseCases;
+namespace Application.Managers;
 
 public class BarabanManager
 {
@@ -16,7 +16,7 @@ public class BarabanManager
         float tempAngle = _baraban.Angle + 60f;
         tempAngle %= 360;
         int tempSector = (int)Math.Floor(tempAngle / 40);
-        return (8 - tempSector);
+        return 8 - tempSector;
     }
 
 }

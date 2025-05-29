@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.UseCases;
+namespace Application.Managers;
 
 public class PresenterManager
 {

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Managers;
+using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Application.UseCases.SectorHandlers;
