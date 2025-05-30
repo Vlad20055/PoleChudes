@@ -53,7 +53,7 @@ public class GameBuilder
         // create SectorHandlers for game
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
         SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager, keyChoicePanelManager);
-        SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager, plusPanelManager, answerPanelManager);
+        SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager, plusPanelManager, answerPanelManager, lettersPanelManager);
         SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager, prizePanelManager, prizeChoicePanelManager);
         SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenterManager, gameTask.Answer, answerPanelManager, lettersPanelManager);
         SectorHandlerInjector sectorHandlerInjector = new SectorHandlerInjector(

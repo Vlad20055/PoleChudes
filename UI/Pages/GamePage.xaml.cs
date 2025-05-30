@@ -62,5 +62,9 @@ public partial class GamePage : ContentPage
         _game.BarabanManager.StartRotation += _barabanViewModel.RotateAsync;
         BarabanPanel.SpinClicked += _barabanViewModel.RotateAsync;
         _barabanViewModel.RotationCompleted += _game.OnRotationCompleted;
+
+        StartGame();
     }
+
+    private async void StartGame() => await _game.Play();
 }

@@ -35,6 +35,12 @@ public class AnswerPanelManager
         return numberOfOpenedLetters;
     }
 
+    public char GetLetter(int position)
+    {
+        char letter = AnswerPanel.AnswerUnits[position - 1].Letter;
+        return letter;
+    }
+
     public void OpenLetter(int position)
     {
         char letter = AnswerPanel.AnswerUnits[position-1].Letter;

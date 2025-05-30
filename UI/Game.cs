@@ -49,6 +49,7 @@ public class Game
             if (CurrentPlayer != Player) // AI
             {
                 manager = PlayerAIManager;
+                await Task.Delay(2000);
                 BarabanManager.RotateBaraban();
             }
             else // Player
@@ -56,14 +57,15 @@ public class Game
                 manager = PlayerManager;
             }
 
+            _barabanTaskCompletionSource = new TaskCompletionSource();
             await _barabanTaskCompletionSource.Task;
 
             if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
 
-            PlayStep(manager);
+            await PlayStepAsync(manager);
         }
     }
-    public async void PlayStep(PlayerManager manager)
+    public async Task PlayStepAsync(PlayerManager manager)
     {
         SectorHandlerInjector.InjectSectorHandler(ref sectorHandler, BarabanManager.EvaluateCurrentSector(), manager);
         ISectorHandler.State state = await sectorHandler.Handle();

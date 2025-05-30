@@ -1,4 +1,5 @@
-﻿using Application.Managers;
+﻿using System.Diagnostics.Metrics;
+using Application.Managers;
 using Domain.Interfaces;
 
 namespace Application.UseCases.SectorHandlers;
@@ -9,6 +10,7 @@ public class SectorPlusHandler : ISectorHandler
     private PresenterManager _presenterManager;
     private PlusPanelManager _plusPanelManager;
     private AnswerPanelManager _answerPanelManager;
+    private LettersPanelManager _lettersPanelManager;
     private PlayerManager? _playerManager = null;
     private ISectorHandler.State _state = ISectorHandler.State.Completed_NoChange;
     private TaskCompletionSource<int> _taskCompletionSource = new TaskCompletionSource<int>();
@@ -16,11 +18,13 @@ public class SectorPlusHandler : ISectorHandler
     public SectorPlusHandler(
         PresenterManager presenterManager,
         PlusPanelManager plusPanelManager,
-        AnswerPanelManager answerPanelManager)
+        AnswerPanelManager answerPanelManager,
+        LettersPanelManager lettersPanelManager)
     {
         _presenterManager = presenterManager;
         _plusPanelManager = plusPanelManager;
         _answerPanelManager = answerPanelManager;
+        _lettersPanelManager = lettersPanelManager;
     }
 
     public async Task<ISectorHandler.State> Handle()
@@ -40,6 +44,7 @@ public class SectorPlusHandler : ISectorHandler
         {
             _plusPanelManager.SetAvailablePositions(closedLetters);
             _plusPanelManager.Enable();
+            _taskCompletionSource = new TaskCompletionSource<int>();
             position = await _taskCompletionSource.Task;
             _plusPanelManager.Disable();
         }
@@ -47,6 +52,7 @@ public class SectorPlusHandler : ISectorHandler
         _answerPanelManager.OpenLetter(position);
         _presenterManager.SetMessage("Откройте!");
         await Task.Delay(1500);
+        _lettersPanelManager.SetColor(_answerPanelManager.GetLetter(position), "Green");
         _presenterManager.SetMessage("Будете барабан вращать?");
 
         return _state;

@@ -43,6 +43,7 @@ public class SectorKeyHandler : ISectorHandler
         else // Player
         {
             _keyChoicePanelManager.Enable();
+            _choiceTaskCompletionSource = new TaskCompletionSource<bool>();
             want = await _choiceTaskCompletionSource.Task;
             _keyChoicePanelManager.Disable();
         }
@@ -63,12 +64,14 @@ public class SectorKeyHandler : ISectorHandler
         }
         else // Player
         {
+            _keyTaskCompletionSource = new TaskCompletionSource<char>();
             keyNumber = await _keyTaskCompletionSource.Task;
         }
 
         _keyPanelManager.SelectKey(keyNumber);
         await Task.Delay(1500);
         processSelectedKey();
+        await Task.Delay(1500);
         _keyPanelManager.SetDefaultState();
         _keyPanelManager.Disable();
         _presenterManager.SetMessage("Вращайте барабан.");

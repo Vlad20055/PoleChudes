@@ -50,6 +50,7 @@ public class SectorPrizeHandler : ISectorHandler
         else // Player
         {
             _prizeChoicePanelManager.Enable();
+            _choiceTaskCompletionSource = new TaskCompletionSource<bool>();
             want = await _choiceTaskCompletionSource.Task;
             _prizeChoicePanelManager.Disable();
         }
@@ -80,6 +81,7 @@ public class SectorPrizeHandler : ISectorHandler
             while (CheckMoneySelection())
             {
                 SujjestMoney();
+                _prizeTaskCompletionSource = new TaskCompletionSource<string>();
                 choice = await _prizeTaskCompletionSource.Task;
                 if (choice == "money") break;
             }
@@ -99,13 +101,14 @@ public class SectorPrizeHandler : ISectorHandler
             _presenterManager.SetMessage("Поздравляю, ПРИЗ ваш!");
         }
 
+        await Task.Delay(2000);
         numberOfMoneySujjestions = 0;
         currentMoneySujjestion = 700;
         _prizePanelManager.RemovePrize();
         _prizePanelManager.Disable();
         _prizePanelManager.DisableButtons();
         if (_playerManager != null) _playerManager.RemovePlayer(); // удаляем текущего игрока
-        _presenterManager.SetMessage("Враащйте барабан!");
+        _presenterManager.SetMessage("Вращайте барабан!");
         _state = ISectorHandler.State.Completed_Change;
 
         return _state;

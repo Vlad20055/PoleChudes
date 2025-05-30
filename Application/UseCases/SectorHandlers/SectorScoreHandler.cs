@@ -47,10 +47,11 @@ public class SectorScoreHandler : ISectorHandler
         else // Player
         {
             _lettersPanelManager.UnblockPanelAccordingToColors();
+            _taskCompletionSource = new TaskCompletionSource<char>();
             choice = await _taskCompletionSource.Task;
         }
 
-        ProcessChosenLetter(choice);
+        await ProcessChosenLetter(choice);
         _presenterManager.SetMessage("Вращайте барабан");
         return _state;
     }
@@ -77,7 +78,7 @@ public class SectorScoreHandler : ISectorHandler
         temp += letter;
         _wrongLetters = _wrongLetters.Replace(temp, string.Empty);
     }
-    private async void ProcessCorrectLetter(char letter)
+    private async Task ProcessCorrectLetter(char letter)
     {
         RemoveRightLetter(letter);
         _presenterManager.SetMessage("Откройте!");
@@ -87,7 +88,7 @@ public class SectorScoreHandler : ISectorHandler
         _lettersPanelManager.SetColor(letter, "Green");
         _state = ISectorHandler.State.Completed_NoChange;
     }
-    private async void ProcessIncorrectLetter(char letter)
+    private async Task ProcessIncorrectLetter(char letter)
     {
         RemoveWrongLetter(letter);
         _presenterManager.SetMessage("Нет. Такой буквы нет.\nПереход хода");
@@ -113,10 +114,10 @@ public class SectorScoreHandler : ISectorHandler
             else _wrongLetters += letter.Key;
         }
     }
-    private void ProcessChosenLetter(char chosenLetter)
+    private async Task ProcessChosenLetter(char chosenLetter)
     {
         _lettersPanelManager.BlockPanel();
-        if (isCorrectLetter(chosenLetter)) ProcessCorrectLetter(chosenLetter);
-        else ProcessIncorrectLetter(chosenLetter);
+        if (isCorrectLetter(chosenLetter)) await ProcessCorrectLetter(chosenLetter);
+        else await ProcessIncorrectLetter(chosenLetter);
     }
 }
