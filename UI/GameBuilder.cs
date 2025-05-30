@@ -98,20 +98,6 @@ public class GameBuilder
 
         configureCurrentPlayer(game);
 
-        // subscribe game for needed events
-        sectorScoreHandler.PlayerChange += game.ChangePlayer;
-        sectorBankrotHandler.PlayerChange += game.ChangePlayer;
-        sectorKeyHandler.PlayerChange += game.ChangePlayer;
-        sectorPrizeHandler.PlayerChange += game.ChangePlayer;
-        sectorKeyHandler.NeedToSetScoreHandler += game.PlaySectorMaxScoreHandler;
-        sectorPrizeHandler.NeedToSetScoreHandler += game.PlaySectorMaxScoreHandler;
-
-        sectorScoreHandler.SectorCompleted += game.ContinueGame;
-        sectorPrizeHandler.SectorCompleted += game.ContinueGame;
-        sectorPlusHandler.SectorCompleted += game.ContinueGame;
-        sectorKeyHandler.SectorCompleted += game.ContinueGame;
-        sectorBankrotHandler.SectorCompleted += game.ContinueGame;
-
         return game;
     }
 

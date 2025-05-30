@@ -10,10 +10,8 @@ public class SectorPlusHandler : ISectorHandler
     private PlusPanelManager _plusPanelManager;
     private AnswerPanelManager _answerPanelManager;
     private PlayerManager? _playerManager = null;
-
-    public event Action? SectorCompleted = null;
-
-    public void SetPlayerManager(PlayerManager playerManager) => _playerManager = playerManager;
+    private ISectorHandler.State _state = ISectorHandler.State.Completed_NoChange;
+    private TaskCompletionSource<int> _taskCompletionSource = new TaskCompletionSource<int>();
 
     public SectorPlusHandler(
         PresenterManager presenterManager,
@@ -25,36 +23,34 @@ public class SectorPlusHandler : ISectorHandler
         _answerPanelManager = answerPanelManager;
     }
 
-    public async void Handle()
+    public async Task<ISectorHandler.State> Handle()
     {
         _presenterManager.SetMessage("SectorPlus");
         await Task.Delay(1500);
         _presenterManager.SetMessage(string.Empty);
         List<int> closedLetters = _answerPanelManager.GetClosedLetters();
+        int position = 0;
 
-        if (_playerManager is PlayerAIManager playerAIManager)
+        if (_playerManager is PlayerAIManager playerAIManager) // AI
         {
             await Task.Delay(1000);
-            int position = playerAIManager.SelectPosition(closedLetters);
-            ProcessSelectedPosition(position);
-            return;
+            position = playerAIManager.SelectPosition(closedLetters);
         }
-
-        if (_playerManager is PlayerManager)
+        else // Player
         {
             _plusPanelManager.SetAvailablePositions(closedLetters);
             _plusPanelManager.Enable();
-            return;
+            position = await _taskCompletionSource.Task;
+            _plusPanelManager.Disable();
         }
-    }
 
-    public async void ProcessSelectedPosition(int position)
-    {
-        _plusPanelManager.Disable();
         _answerPanelManager.OpenLetter(position);
         _presenterManager.SetMessage("Откройте!");
         await Task.Delay(1500);
         _presenterManager.SetMessage("Будете барабан вращать?");
-        SectorCompleted?.Invoke();
+
+        return _state;
     }
+    public void SetPlayerManager(PlayerManager playerManager) => _playerManager = playerManager;
+    public void OnPositionSelected(int position) => _taskCompletionSource.TrySetResult(position);
 }

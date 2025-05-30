@@ -7,6 +7,8 @@ namespace UI;
 
 public class Game
 {
+    private TaskCompletionSource _barabanTaskCompletionSource = new TaskCompletionSource();
+
     public required BarabanManager BarabanManager;
     public required Baraban Baraban;
     public required Player Player1;
@@ -36,35 +38,44 @@ public class Game
 
     public Player? CurrentPlayer;
 
-    public void ContinueGame()
+    public void OnRotationCompleted() => _barabanTaskCompletionSource.TrySetResult();
+
+    public async Task Play()
     {
-        if (CurrentPlayer == Player) return;
-        else
+        PlayerManager manager;
+
+        while (true)
         {
-            BarabanManager.RotateBaraban();
+            if (CurrentPlayer != Player) // AI
+            {
+                manager = PlayerAIManager;
+                BarabanManager.RotateBaraban();
+            }
+            else // Player
+            {
+                manager = PlayerManager;
+            }
+
+            await _barabanTaskCompletionSource.Task;
+
+            if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
+
+            PlayStep(manager);
         }
     }
-
-    public void PlayStep()
+    public async void PlayStep(PlayerManager manager)
     {
-        PlayerManager manager;
-        if (CurrentPlayer == Player) manager = PlayerManager;
-        else manager = PlayerAIManager;
-        if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
         SectorHandlerInjector.InjectSectorHandler(ref sectorHandler, BarabanManager.EvaluateCurrentSector(), manager);
-        sectorHandler.Handle();
-    }
+        ISectorHandler.State state = await sectorHandler.Handle();
 
-    public void PlaySectorMaxScoreHandler()
-    {
-        PlayerManager manager;
-        if (CurrentPlayer == Player) manager = PlayerManager;
-        else manager = PlayerAIManager;
-        if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
-        SectorHandlerInjector.InjectSectorHandler(ref sectorHandler, 7, manager); // Score = 1000
-        sectorHandler.Handle();
-    }
+        if (state == ISectorHandler.State.Incompleted)
+        {
+            SectorHandlerInjector.InjectSectorHandler(ref sectorHandler, 7, manager);  // Score = 1000
+            state = await sectorHandler.Handle();
+        }
 
+        if (state == ISectorHandler.State.Completed_Change) ChangePlayer();
+    }
     public void ChangePlayer() // it is considered that it is possible to change current player correctly
     {
         int currentPlayerId = 0;

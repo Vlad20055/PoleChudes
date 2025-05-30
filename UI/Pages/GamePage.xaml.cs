@@ -55,14 +55,12 @@ public partial class GamePage : ContentPage
         // subscribe on needed events
         KeyChoicePanel.Chosen += _game.SectorHandlerInjector.SectorKeyHandler.OnChoiceSelected;
         KeyPanel.KeySelected += _game.SectorHandlerInjector.SectorKeyHandler.OnKeySelected;
-        PlusPanel.PositionSelected += _game.SectorHandlerInjector.SectorPlusHandler.ProcessSelectedPosition;
         PrizeChoicePanel.Chosen += _game.SectorHandlerInjector.SectorPrizeHandler.OnChoiceSelected;
-        PrizePanel.PrizeSelected += _game.SectorHandlerInjector.SectorPrizeHandler.ProcessPrizeSelected;
-        PrizePanel.MoneySelected += _game.SectorHandlerInjector.SectorPrizeHandler.ProcessMoneySelected;
-        LettersPanel.LetterSelected += _game.SectorHandlerInjector.SectorScoreHandler.ProcessChosenLetter;
+        PrizePanel.PrizeSelected += _game.SectorHandlerInjector.SectorPrizeHandler.OnPrizeSelected;
+        PlusPanel.PositionSelected += _game.SectorHandlerInjector.SectorPlusHandler.OnPositionSelected;
+        LettersPanel.LetterSelected += _game.SectorHandlerInjector.SectorScoreHandler.OnLetterSelected;
         _game.BarabanManager.StartRotation += _barabanViewModel.RotateAsync;
         BarabanPanel.SpinClicked += _barabanViewModel.RotateAsync;
-        _barabanViewModel.RotationCompleted += _game.PlayStep;
+        _barabanViewModel.RotationCompleted += _game.OnRotationCompleted;
     }
-
 }

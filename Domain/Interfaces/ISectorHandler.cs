@@ -2,5 +2,12 @@
 
 public interface ISectorHandler
 {
-    void Handle();
+    Task<State> Handle();
+
+    enum State
+    {
+        Completed_Change,
+        Completed_NoChange,
+        Incompleted,
+    };
 }

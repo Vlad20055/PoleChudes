@@ -10,12 +10,13 @@ public class SectorKeyHandler : ISectorHandler
     private KeyPanelManager _keyPanelManager;
     private KeyChoicePanelManager _keyChoicePanelManager;
     private PlayerManager? _playerManager = null;
-
-    public event Action? SectorCompleted = null;
-    public event Action? PlayerChange = null;
-    public event Action? NeedToSetScoreHandler;
+    private ISectorHandler.State _state;
+    private TaskCompletionSource<bool> _choiceTaskCompletionSource = new TaskCompletionSource<bool>();
+    private TaskCompletionSource<char> _keyTaskCompletionSource = new TaskCompletionSource<char>();
 
     public void SetPlayerManager(PlayerManager playerManager) => _playerManager = playerManager;
+    public void OnChoiceSelected(bool want) => _choiceTaskCompletionSource.TrySetResult(want);
+    public void OnKeySelected(char keyNumber) => _keyTaskCompletionSource.TrySetResult(keyNumber);
 
     public SectorKeyHandler(
         PresenterManager presenterManager,
@@ -27,78 +28,67 @@ public class SectorKeyHandler : ISectorHandler
         _keyChoicePanelManager = keyChoicePanelManager;
     }
 
-    public async void Handle()
+    public async Task<ISectorHandler.State> Handle()
     {
         _presenterManager.SetMessage("Сектор КЛЮЧ на барабане!\nХотите попробовать?");
         await Task.Delay(1500);
         _presenterManager.SetMessage(string.Empty);
+        bool want = false;
 
-        if (_playerManager is PlayerAIManager playerAIManager)
+        if (_playerManager is PlayerAIManager playerAIManager) // AI
         {
             await Task.Delay(1000);
-            bool want = playerAIManager.WantTrySectorKey();
-            OnChoiceSelected(want);
-            return;
+            want = playerAIManager.WantTrySectorKey();
         }
-
-        if (_playerManager is PlayerManager)
+        else // Player
         {
             _keyChoicePanelManager.Enable();
-            return;
+            want = await _choiceTaskCompletionSource.Task;
+            _keyChoicePanelManager.Disable();
         }
-    }
 
-    public async void OnChoiceSelected(bool want)
-    {
-        _keyChoicePanelManager.Disable();
-
-        if (want)
+        if (!want) // говорим игре, что нужно поменять ISectorHandler на SectorScoreHandler
         {
-            _keyPanelManager.Enable();
-            
-            if (_playerManager is PlayerAIManager playerAIManager)
-            {
-                await Task.Delay(1000);
-                char keyNumber = playerAIManager.SelectKey();
-                processSelectedKey(keyNumber);
-            }
-
-            if (_playerManager is PlayerManager) return;
+            _state = ISectorHandler.State.Incompleted;
+            return _state;
         }
-        else // говорим игре, что нужно поменять ISectorHandler на SectorScoreHandler
+
+        char keyNumber = '*';
+        _keyPanelManager.Enable();
+
+        if (_playerManager is PlayerAIManager PlayerAIManager) // AI
         {
-            NeedToSetScoreHandler?.Invoke();
+            await Task.Delay(1000);
+            keyNumber = PlayerAIManager.SelectKey();
         }
-    }
+        else // Player
+        {
+            keyNumber = await _keyTaskCompletionSource.Task;
+        }
 
-    public void OnKeySelected(char keyNumber) => processSelectedKey(keyNumber);
-
-    private void processSelectedKey(char keyNumber)
-    {
         _keyPanelManager.SelectKey(keyNumber);
+        await Task.Delay(1500);
+        processSelectedKey();
+        _keyPanelManager.SetDefaultState();
+        _keyPanelManager.Disable();
+        _presenterManager.SetMessage("Вращайте барабан.");
+        _state = ISectorHandler.State.Completed_Change;
+
+        return _state;
+    }
+    private void processSelectedKey()
+    {
         Random rnd = new Random();
         int temp = rnd.Next(0, 100);
         if (temp <= 100 / _keyPanelManager.KeyPanel.KeyUnits.Count) processCorrectKey();
         else processIncorrectKey();
     }
-    private async void processCorrectKey()
+    private void processCorrectKey()
     {
         _presenterManager.SetMessage("Угадал!\nАвтомобиль Ваш!");
-        await Task.Delay(1000);
-        _keyPanelManager.SetDefaultState();
-        _keyPanelManager.Disable();
-        _presenterManager.SetMessage("Вращайте барабан.");
-        PlayerChange?.Invoke();
-        SectorCompleted?.Invoke();
     }
-    private async void processIncorrectKey()
+    private void processIncorrectKey()
     {
         _presenterManager.SetMessage("Увы.\nПовезёт в следующий раз.");
-        await Task.Delay(1000);
-        _keyPanelManager.SetDefaultState();
-        _keyPanelManager.Disable();
-        _presenterManager.SetMessage("Вращайте барабан.");
-        PlayerChange?.Invoke();
-        SectorCompleted?.Invoke();
     }
 }

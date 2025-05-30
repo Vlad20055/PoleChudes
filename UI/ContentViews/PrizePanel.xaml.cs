@@ -2,8 +2,7 @@ namespace UI.ContentViews;
 
 public partial class PrizePanel : ContentView
 {
-    public event Action? PrizeSelected;
-    public event Action? MoneySelected;
+    public event Action<string>? PrizeSelected;
 
 	public PrizePanel()
 	{
@@ -12,11 +11,11 @@ public partial class PrizePanel : ContentView
 
     private void MoneyButton_Clicked(object sender, EventArgs e)
     {
-        MoneySelected?.Invoke();
+        PrizeSelected?.Invoke("money");
     }
 
     private void PrizeButton_Clicked(object sender, EventArgs e)
     {
-        PrizeSelected?.Invoke();
+        PrizeSelected?.Invoke("prize");
     }
 }
