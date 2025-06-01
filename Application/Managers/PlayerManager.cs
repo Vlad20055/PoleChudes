@@ -19,4 +19,8 @@ public class PlayerManager
     {
         if (_player != null) _player.Active = false;
     }
+    public void SetMessage(string message)
+    {
+        if (_player != null) _player.Message = message;
+    }
 }

@@ -50,9 +50,16 @@ public class SectorKeyHandler : ISectorHandler
 
         if (!want) // говорим игре, что нужно поменять ISectorHandler на SectorScoreHandler
         {
+            if (_playerManager != null) _playerManager.SetMessage("Буду играть!");
+            await Task.Delay(1000);
+            if (_playerManager != null) _playerManager.SetMessage(string.Empty);
             _state = ISectorHandler.State.Incompleted;
             return _state;
         }
+
+        if (_playerManager != null) _playerManager.SetMessage("Ключ!");
+        await Task.Delay(1000);
+        if (_playerManager != null) _playerManager.SetMessage(string.Empty);
 
         char keyNumber = '*';
         _keyPanelManager.Enable();

@@ -35,6 +35,8 @@ public class Game
     public required PrizePanelManager PrizePanelManager;
     public required PrizePanel PrizePanel;
     public required ISectorHandler sectorHandler;
+    public required PrizesSuperGamePanelManager PrizesSuperGamePanelManager;
+    public required PrizesSuperGamePanel PrizesSuperGamePanel;
 
     public Player? CurrentPlayer;
 

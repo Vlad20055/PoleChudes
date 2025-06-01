@@ -38,12 +38,22 @@
                 x:Name="PlayersPanel"
                 Grid.Row="2"
                 Grid.Column="0"
+                Grid.RowSpan="2"
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />
 
             <!-- Baraban with button and arrow -->
             <cv:BarabanPanel
+                IsVisible="False"
                 x:Name="BarabanPanel"
+                Grid.Row="2"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
+            
+            <cv:PrizesSuperGamePanel
+                x:Name="PrizesSuperGamePanel"
                 Grid.Row="2"
                 Grid.RowSpan="2"
                 Grid.Column="1"

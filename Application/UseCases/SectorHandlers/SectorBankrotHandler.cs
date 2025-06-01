@@ -16,7 +16,7 @@ public class SectorBankrotHandler : ISectorHandler
 
     public async Task<ISectorHandler.State> Handle()
     {
-        _presenterManager.SetMessage("SectorBankrot\nПереход хода.");
+        _presenterManager.SetMessage("ООО, а вы банкрот.\nПереход хода.");
         await Task.Delay(1500);
         _presenterManager.SetMessage("Вращайте барабан.");
         if (_playerManager != null) _playerManager.RemoveScore();

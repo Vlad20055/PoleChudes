@@ -50,12 +50,23 @@ public class GameBuilder
         PrizeChoicePanel prizeChoicePanel = new PrizeChoicePanel();
         PrizeChoicePanelManager prizeChoicePanelManager = new PrizeChoicePanelManager(prizeChoicePanel);
 
+        // create RightWrongLetters for game
+        RightWrongLetters rightWrongLetters = new RightWrongLetters(gameTask.Answer);
+        RightWrongLettersManager rightWrongLettersManager = new RightWrongLettersManager(rightWrongLetters);
+
+        // create PrizeList for game
+        PrizeList prizeList = new PrizeList();
+
+        // create PrizesSuperGamePanel for game
+        PrizesSuperGamePanel prizesSuperGamePanel = new PrizesSuperGamePanel(prizeList);
+        PrizesSuperGamePanelManager prizesSuperGamePanelManager = new PrizesSuperGamePanelManager(prizesSuperGamePanel);
+
         // create SectorHandlers for game
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
         SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager, keyChoicePanelManager);
-        SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager, plusPanelManager, answerPanelManager, lettersPanelManager);
-        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager, prizePanelManager, prizeChoicePanelManager);
-        SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenterManager, gameTask.Answer, answerPanelManager, lettersPanelManager);
+        SectorPlusHandler sectorPlusHandler = new SectorPlusHandler(presenterManager, plusPanelManager, answerPanelManager, lettersPanelManager, rightWrongLettersManager);
+        SectorPrizeHandler sectorPrizeHandler = new SectorPrizeHandler(presenterManager, prizePanelManager, prizeChoicePanelManager, prizeList);
+        SectorScoreHandler sectorScoreHandler = new SectorScoreHandler(presenterManager, answerPanelManager, lettersPanelManager, rightWrongLettersManager);
         SectorHandlerInjector sectorHandlerInjector = new SectorHandlerInjector(
             sectorBankrotHandler,
             sectorKeyHandler,
@@ -94,6 +105,8 @@ public class GameBuilder
             PrizeChoicePanel = prizeChoicePanel,
             PrizePanelManager = prizePanelManager,
             PrizePanel = prizePanelManager.PrizePanel,
+            PrizesSuperGamePanelManager = prizesSuperGamePanelManager,
+            PrizesSuperGamePanel = prizesSuperGamePanel,
         };
 
         configureCurrentPlayer(game);

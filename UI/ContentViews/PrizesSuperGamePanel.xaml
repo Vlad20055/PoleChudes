@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:UI.ViewModels"
+    x:Class="UI.ContentViews.PrizesSuperGamePanel"
+    x:DataType="vm:PrizesSuperGamePanelViewModel"
+    IsVisible="{Binding IsVisible}">
+
+    <VerticalStackLayout>
+        <!-- Внешний Grid: две строки – 
+               первая (Auto) для Score, 
+               вторая (*) для списка призов -->
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- 1. Score -->
+            <Label
+                Grid.Row="0"
+                Text="{Binding Score, StringFormat='{}{0}'}"
+                FontSize="20"
+                HorizontalOptions="Center" />
+
+            <!-- 2. Список призов -->
+            <VerticalStackLayout
+                Grid.Row="1"
+                BindableLayout.ItemsSource="{Binding Prizes}"
+                Spacing="10"
+                VerticalOptions="Start"
+                HorizontalOptions="Fill">
+
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PrizeSuperGameUnitViewModel">
+
+                        <!-- Каждый ряд — Grid с двумя колонками -->
+                        <Grid HorizontalOptions="Fill">
+                            <Grid.ColumnDefinitions>
+                                <!-- Колонка для кнопки: займёт всё свободное место -->
+                                <ColumnDefinition Width="*" />
+                                <!-- Колонка под стоимость: Auto ширина -->
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- 1) Кнопка “имя приза” -->
+                            <Button
+                                Grid.Column="0"
+                                BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}"
+                                Text="{Binding Name}"
+                                TextColor="Black"
+                                FontAttributes="Bold"
+                                Clicked="Prize_Clicked"
+                                HorizontalOptions="Fill" />
+                            <!-- заполняет свою звёздную колонку -->
+
+                            <!-- 2) Цена приза -->
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding Cost, StringFormat='{}{0}'}"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+
+            </VerticalStackLayout>
+        </Grid>
+
+        <Button
+            Text="Выбрать"
+            TextColor="Black"
+            FontAttributes="Bold"
+            BackgroundColor="DarkSlateGray"
+            Clicked="Confirm_Clicked" />
+    </VerticalStackLayout>
+    
+    
+    
+    
+    
+</ContentView>

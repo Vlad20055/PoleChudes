@@ -9,34 +9,30 @@ public class SectorPrizeHandler : ISectorHandler
     private PresenterManager _presenterManager;
     private PrizeChoicePanelManager _prizeChoicePanelManager;
     private PrizePanelManager _prizePanelManager;
+    private PrizeList _prizeList;
     private PlayerManager? _playerManager = null;
     private int currentMoneySujjestion = 700;
     private int numberOfMoneySujjestions = 0;
     private int maxNumberOfMoneySujjestions = 4;
     private ISectorHandler.State _state;
-    private List<Prize> prizes = new List<Prize>()
-    {
-        new Prize() {Id = 1, Name = "Микроволновая печь", PrizeImage = "microwave.jpg"},
-        new Prize() {Id = 2, Name = "Стиральная машина", PrizeImage = "washing_machine.jpeg" },
-        new Prize() {Id = 3, Name = "Мультиварка", PrizeImage = "multivarka.jpg" },
-    };
-    private Prize _moneyPrize = new Prize() { Id = 0, Name = "Деньги", PrizeImage = "money.jpg" };
     private TaskCompletionSource<bool> _choiceTaskCompletionSource = new TaskCompletionSource<bool>();
     private TaskCompletionSource<string> _prizeTaskCompletionSource = new TaskCompletionSource<string>();
 
     public SectorPrizeHandler(
         PresenterManager presenterManager,
         PrizePanelManager prizePanelManager,
-        PrizeChoicePanelManager prizeChoicePanelManager)
+        PrizeChoicePanelManager prizeChoicePanelManager,
+        PrizeList prizeList)
     {
         _presenterManager = presenterManager;
         _prizePanelManager = prizePanelManager;
         _prizeChoicePanelManager = prizeChoicePanelManager;
+        _prizeList = prizeList;
     }
 
     public async Task<ISectorHandler.State> Handle()
     {
-        _presenterManager.SetMessage("SectorPrize");
+        _presenterManager.SetMessage("Сектор ПРИЗ на барабане!\nЧто выбираете?");
         await Task.Delay(1500);
         _presenterManager.SetMessage(string.Empty);
         numberOfMoneySujjestions = 0;
@@ -57,9 +53,16 @@ public class SectorPrizeHandler : ISectorHandler
 
         if (!want) // говорим игре, что нужно поменять ISectorHandler на SectorScoreHandler
         {
+            if (_playerManager != null) _playerManager.SetMessage("Буду играть!");
+            await Task.Delay(1000);
+            if (_playerManager != null) _playerManager.SetMessage(string.Empty);
             _state = ISectorHandler.State.Incompleted;
             return _state;
         }
+
+        if (_playerManager != null) _playerManager.SetMessage("Приз!");
+        await Task.Delay(1000);
+        if (_playerManager != null) _playerManager.SetMessage(string.Empty);
 
         string choice = string.Empty;
 
@@ -92,7 +95,7 @@ public class SectorPrizeHandler : ISectorHandler
 
         if (choice == "money") // отдаём деньги
         {
-            _prizePanelManager.SetPrize(_moneyPrize);
+            _prizePanelManager.SetPrize(_prizeList.MoneyPrize);
             _presenterManager.SetMessage($"Забирайте ваши деньги.\nРовно {currentMoneySujjestion} руб.");
         }
         else // отдаём приз
@@ -124,10 +127,10 @@ public class SectorPrizeHandler : ISectorHandler
     }
     private Prize GetRandomPrize()
     {
-        if (prizes.Count == 0) throw new Exception("Can't find prizes in SectorPrizeHandler");
+        if (_prizeList.Prizes.Count == 0) throw new Exception("Can't find prizes in SectorPrizeHandler");
 
         var rand = new Random();
-        var randomPrize = prizes[rand.Next(prizes.Count)];
+        var randomPrize = _prizeList.Prizes[rand.Next(_prizeList.Prizes.Count)];
         return randomPrize;
     }
     private void SujjestMoney()

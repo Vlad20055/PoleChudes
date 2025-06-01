@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using Application.Managers;
+﻿using Application.Managers;
 using Domain.Interfaces;
 
 namespace Application.UseCases.SectorHandlers;
@@ -11,6 +10,7 @@ public class SectorPlusHandler : ISectorHandler
     private PlusPanelManager _plusPanelManager;
     private AnswerPanelManager _answerPanelManager;
     private LettersPanelManager _lettersPanelManager;
+    private RightWrongLettersManager _rightWrongLettersManager;
     private PlayerManager? _playerManager = null;
     private ISectorHandler.State _state = ISectorHandler.State.Completed_NoChange;
     private TaskCompletionSource<int> _taskCompletionSource = new TaskCompletionSource<int>();
@@ -19,12 +19,14 @@ public class SectorPlusHandler : ISectorHandler
         PresenterManager presenterManager,
         PlusPanelManager plusPanelManager,
         AnswerPanelManager answerPanelManager,
-        LettersPanelManager lettersPanelManager)
+        LettersPanelManager lettersPanelManager,
+        RightWrongLettersManager rightWrongLettersManager)
     {
         _presenterManager = presenterManager;
         _plusPanelManager = plusPanelManager;
         _answerPanelManager = answerPanelManager;
         _lettersPanelManager = lettersPanelManager;
+        _rightWrongLettersManager = rightWrongLettersManager;
     }
 
     public async Task<ISectorHandler.State> Handle()
@@ -49,11 +51,17 @@ public class SectorPlusHandler : ISectorHandler
             _plusPanelManager.Disable();
         }
 
-        _answerPanelManager.OpenLetter(position);
+        if (_playerManager != null) _playerManager.SetMessage($"{position}-ю букву");
+        await Task.Delay(1000);
+        if (_playerManager != null) _playerManager.SetMessage(string.Empty);
         _presenterManager.SetMessage("Откройте!");
-        await Task.Delay(1500);
-        _lettersPanelManager.SetColor(_answerPanelManager.GetLetter(position), "Green");
-        _presenterManager.SetMessage("Будете барабан вращать?");
+        await Task.Delay(1000);
+        _answerPanelManager.OpenLetter(position);
+        await Task.Delay(1000);
+        char letter = _answerPanelManager.GetLetter(position);
+        _lettersPanelManager.SetColor(letter, "Green");
+        _rightWrongLettersManager.RemoveRightLetter(letter);
+        _presenterManager.SetMessage("Будете вращать барабан?");
 
         return _state;
     }

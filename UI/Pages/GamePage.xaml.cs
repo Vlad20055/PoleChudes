@@ -18,6 +18,7 @@ public partial class GamePage : ContentPage
     private PrizeChoicePanelViewModel _prizeChoicePanelViewModel;
     private PrizePanelViewModel _prizePanelViewModel;
     private BarabanViewModel _barabanViewModel;
+    private PrizesSuperGamePanelViewModel _prizesSuperGamePanelViewModel;
 
     public GamePage()
     {
@@ -38,6 +39,7 @@ public partial class GamePage : ContentPage
         _prizeChoicePanelViewModel = new PrizeChoicePanelViewModel(_game.PrizeChoicePanel);
         _prizePanelViewModel = new PrizePanelViewModel(_game.PrizePanel);
         _barabanViewModel = new BarabanViewModel(_game.Baraban);
+        _prizesSuperGamePanelViewModel = new PrizesSuperGamePanelViewModel(_game.PrizesSuperGamePanel);
 
         // create dependences
         BarabanPanel.BarabanContainer.Content = _barabanViewModel;
@@ -51,6 +53,7 @@ public partial class GamePage : ContentPage
         PlusPanel.BindingContext = _plusPanelViewModel;
         PrizeChoicePanel.BindingContext = _prizeChoicePanelViewModel;
         PrizePanel.BindingContext = _prizePanelViewModel;
+        PrizesSuperGamePanel.BindingContext = _prizesSuperGamePanelViewModel;
 
         // subscribe on needed events
         KeyChoicePanel.Chosen += _game.SectorHandlerInjector.SectorKeyHandler.OnChoiceSelected;
@@ -62,6 +65,7 @@ public partial class GamePage : ContentPage
         _game.BarabanManager.StartRotation += _barabanViewModel.RotateAsync;
         BarabanPanel.SpinClicked += _barabanViewModel.RotateAsync;
         _barabanViewModel.RotationCompleted += _game.OnRotationCompleted;
+        PrizesSuperGamePanel.PrizeSelected += _game.PrizesSuperGamePanelManager.OnPrizeSelected;
 
         StartGame();
     }

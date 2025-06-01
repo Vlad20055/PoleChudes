@@ -8,41 +8,34 @@ public class SectorScoreHandler : ISectorHandler
     private PresenterManager _presenterManager;
     private AnswerPanelManager _answerPanelManager;
     private LettersPanelManager _lettersPanelManager;
+    private RightWrongLettersManager _rightWrongLettersManager;
     private PlayerManager? _playerManager = null;
     private TaskCompletionSource<char> _taskCompletionSource = new TaskCompletionSource<char>();
-    private string _answer;
-    private string _rightLetters;
-    private string _wrongLetters;
     private ISectorHandler.State _state;
     public int? Score { get; set; } = null;
 
     public SectorScoreHandler(
         PresenterManager presenterManager,
-        string answer,
         AnswerPanelManager answerPanelManager,
-        LettersPanelManager lettersPanelManager)
+        LettersPanelManager lettersPanelManager,
+        RightWrongLettersManager rightWrongLettersManager)
     {
         _presenterManager = presenterManager;
-        _answer = answer;
         _answerPanelManager = answerPanelManager;
         _lettersPanelManager = lettersPanelManager;
-        _rightLetters = string.Empty;
-        _wrongLetters = string.Empty;
-
-        ConfigureRightAndWrongStrings();
+        _rightWrongLettersManager = rightWrongLettersManager;
     }
 
     public async Task<ISectorHandler.State> Handle()
     {
-        _presenterManager.SetMessage("SectorScore");
+        _presenterManager.SetMessage($"{Score} очков. Буква...");
         await Task.Delay(1500);
-        _presenterManager.SetMessage(string.Empty);
         char choice = '*';
 
         if (_playerManager is PlayerAIManager playerAIManager) // AI
         {
             await Task.Delay(1000);
-            choice = playerAIManager.SelectLetter(_rightLetters, _wrongLetters);
+            choice = playerAIManager.SelectLetter(_rightWrongLettersManager.GetRightLetters(), _rightWrongLettersManager.GetWrongLetters());
         }
         else // Player
         {
@@ -51,7 +44,9 @@ public class SectorScoreHandler : ISectorHandler
             choice = await _taskCompletionSource.Task;
         }
 
+        if (_playerManager != null) _playerManager.SetMessage($"Буква {choice}");
         await ProcessChosenLetter(choice);
+        if (_playerManager != null) _playerManager.SetMessage(string.Empty);
         _presenterManager.SetMessage("Вращайте барабан");
         return _state;
     }
@@ -60,27 +55,15 @@ public class SectorScoreHandler : ISectorHandler
 
     private bool isCorrectLetter(char letter)
     {
-        foreach (char el in _answer)
+        foreach (char el in _rightWrongLettersManager.GetAnswer())
         {
             if (el == letter) return true;
         }
         return false;
     }
-    private void RemoveRightLetter(char letter)
-    {
-        string temp = string.Empty;
-        temp += letter;
-        _rightLetters = _rightLetters.Replace(temp, string.Empty);
-    }
-    private void RemoveWrongLetter(char letter)
-    {
-        string temp = string.Empty;
-        temp += letter;
-        _wrongLetters = _wrongLetters.Replace(temp, string.Empty);
-    }
     private async Task ProcessCorrectLetter(char letter)
     {
-        RemoveRightLetter(letter);
+        _rightWrongLettersManager.RemoveRightLetter(letter);
         _presenterManager.SetMessage("Откройте!");
         await Task.Delay(1000);
         int numberOfOpenedLetters = _answerPanelManager.OpenLetter(letter);
@@ -90,29 +73,11 @@ public class SectorScoreHandler : ISectorHandler
     }
     private async Task ProcessIncorrectLetter(char letter)
     {
-        RemoveWrongLetter(letter);
+        _rightWrongLettersManager.RemoveWrongLetter(letter);
         _presenterManager.SetMessage("Нет. Такой буквы нет.\nПереход хода");
         await Task.Delay(1000);
         _lettersPanelManager.SetColor(letter, "Red");
         _state = ISectorHandler.State.Completed_Change;
-    }
-    private void ConfigureRightAndWrongStrings()
-    {
-        Dictionary<char, bool> letters = new Dictionary<char, bool>();
-        string alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-        foreach (char letter in alphabet)
-        {
-            letters[letter] = false;
-        }
-        foreach (char letter in _answer)
-        {
-            letters[letter] = true;
-        }
-        foreach (var letter in letters)
-        {
-            if (letter.Value) _rightLetters += letter.Key;
-            else _wrongLetters += letter.Key;
-        }
     }
     private async Task ProcessChosenLetter(char chosenLetter)
     {

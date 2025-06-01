@@ -2,26 +2,28 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:UI.ViewModels"
-             x:Class="UI.ContentViews.PlayersPanel">
+             x:Class="UI.ContentViews.PlayersPanel"
+             HeightRequest="150"
+             WidthRequest="250">
     
     <Grid
         x:DataType="vm:PlayersViewModel"
-        WidthRequest="200"
         RowSpacing="8"
         ColumnSpacing="16"
         VerticalOptions="Center">
 
         <!-- Определяем строки: 1 заголовок + 3 игрока -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!-- Два столбца: имена и очки -->
+        <!-- Три столбца: имена, очки, текст -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
         <!-- Заголовок -->
@@ -37,32 +39,52 @@
         <Label
             Grid.Row="1"
             Grid.Column="0"
-            Text="{Binding Player1.Name}" />
+            Text="{Binding Name1}"
+            TextColor="Black"
+            FontAttributes="Bold"
+            BackgroundColor="{Binding CurrentPlayer1, Converter={StaticResource BoolToColorConverter}}" />
         <Label
             Grid.Row="1"
             Grid.Column="1"
-            Text="{Binding Player1.Score, StringFormat='{}{0}'}" />
+            Text="{Binding Score1, StringFormat='{}{0}'}" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="2"
+            Text="{Binding Message1}" />
 
         <!-- Игрок 2 -->
         <Label
             Grid.Row="2"
             Grid.Column="0"
-            Text="{Binding Player2.Name}" />
+            Text="{Binding Name2}"
+            TextColor="Black"
+            FontAttributes="Bold"
+            BackgroundColor="{Binding CurrentPlayer2, Converter={StaticResource BoolToColorConverter}}" />
         <Label
             Grid.Row="2"
             Grid.Column="1"
-            Text="{Binding Player2.Score, StringFormat='{}{0}'}" />
+            Text="{Binding Score2, StringFormat='{}{0}'}" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="2"
+            Text="{Binding Message2}" />
 
         <!-- Игрок -->
         <Label
             Grid.Row="3"
             Grid.Column="0"
-            Text="{Binding Player.Name}"
-            FontAttributes="Bold" />
+            Text="{Binding Name}"
+            TextColor="Black"
+            FontAttributes="Bold"
+            BackgroundColor="{Binding CurrentPlayer, Converter={StaticResource BoolToColorConverter}}" />
         <Label
             Grid.Row="3"
             Grid.Column="1"
-            Text="{Binding Player.Score, StringFormat='{}{0}'}"
+            Text="{Binding Score, StringFormat='{}{0}'}"
             FontAttributes="Bold" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="2"
+            Text="{Binding Message}" />
     </Grid>
 </ContentView>
