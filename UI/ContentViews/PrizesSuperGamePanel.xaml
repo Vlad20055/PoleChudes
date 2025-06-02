@@ -7,78 +7,77 @@
     x:DataType="vm:PrizesSuperGamePanelViewModel"
     IsVisible="{Binding IsVisible}">
 
-    <VerticalStackLayout>
-        <!-- Внешний Grid: две строки – 
-               первая (Auto) для Score, 
-               вторая (*) для списка призов -->
-        <Grid Padding="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <!-- 
+    Внешний Grid: три строки:
+      0) Auto  — для метки Score
+      1) *     — для списка призов (BindableLayout)
+      2) Auto  — для кнопки внизу 
+  -->
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Score -->
+            <RowDefinition Height="*" />
+            <!-- Список призов -->
+            <RowDefinition Height="Auto" />
+            <!-- Кнопка -->
+        </Grid.RowDefinitions>
 
-            <!-- 1. Score -->
-            <Label
-                Grid.Row="0"
-                Text="{Binding Score, StringFormat='{}{0}'}"
-                FontSize="20"
-                HorizontalOptions="Center" />
+        <!-- 1) Score -->
+        <Label
+        Grid.Row="0"
+        Text="{Binding Score, StringFormat='{}{0}'}"
+        FontSize="20"
+        HorizontalOptions="Center" />
 
-            <!-- 2. Список призов -->
-            <VerticalStackLayout
-                Grid.Row="1"
-                BindableLayout.ItemsSource="{Binding Prizes}"
-                Spacing="10"
-                VerticalOptions="Start"
-                HorizontalOptions="Fill">
+        <!-- 2) Список призов -->
+        <VerticalStackLayout
+        Grid.Row="1"
+        BindableLayout.ItemsSource="{Binding Prizes}"
+        Spacing="10"
+        VerticalOptions="Start"
+        HorizontalOptions="Fill">
 
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="vm:PrizeSuperGameUnitViewModel">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="vm:PrizeSuperGameUnitViewModel">
 
-                        <!-- Каждый ряд — Grid с двумя колонками -->
-                        <Grid HorizontalOptions="Fill">
-                            <Grid.ColumnDefinitions>
-                                <!-- Колонка для кнопки: займёт всё свободное место -->
-                                <ColumnDefinition Width="*" />
-                                <!-- Колонка под стоимость: Auto ширина -->
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                    <!-- Каждый ряд — Grid с двумя колонками -->
+                    <Grid HorizontalOptions="Fill">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                            <!-- 1) Кнопка “имя приза” -->
-                            <Button
-                                Grid.Column="0"
-                                BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}"
-                                Text="{Binding Name}"
-                                TextColor="Black"
-                                FontAttributes="Bold"
-                                Clicked="Prize_Clicked"
-                                HorizontalOptions="Fill" />
-                            <!-- заполняет свою звёздную колонку -->
+                        <Button
+                Grid.Column="0"
+                BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}"
+                Text="{Binding Name}"
+                TextColor="Black"
+                FontAttributes="Bold"
+                Clicked="Prize_Clicked"
+                HorizontalOptions="Fill" />
 
-                            <!-- 2) Цена приза -->
-                            <Label
-                                Grid.Column="1"
-                                Text="{Binding Cost, StringFormat='{}{0}'}"
-                                VerticalOptions="Center" />
+                        <Label
+                Grid.Column="1"
+                Text="{Binding Cost, StringFormat='{}{0}'}"
+                VerticalOptions="Center" />
 
-                        </Grid>
+                    </Grid>
 
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
 
-            </VerticalStackLayout>
-        </Grid>
+        </VerticalStackLayout>
 
+        <!-- 3) Кнопка внизу -->
         <Button
-            Text="Выбрать"
-            TextColor="Black"
-            FontAttributes="Bold"
-            BackgroundColor="DarkSlateGray"
-            Clicked="Confirm_Clicked" />
-    </VerticalStackLayout>
-    
-    
-    
-    
-    
+        Grid.Row="2"
+        Text="Выбрать"
+        HorizontalOptions="Center"
+        VerticalOptions="End"
+        WidthRequest="200"
+        Margin="0,10,0,0"
+        Clicked="Confirm_Clicked" />
+        <!-- Если команда не нужна, вместо Command можно обработчик Clicked -->
+    </Grid>
 </ContentView>

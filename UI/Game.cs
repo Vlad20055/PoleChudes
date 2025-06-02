@@ -16,6 +16,7 @@ public class Game
     public required Player Player;
     public required PlayerManager PlayerManager;
     public required PlayerAIManager PlayerAIManager;
+    public required GameTaskManager GameTaskManager;
     public required GameTask GameTask;
     public required AnswerPanelManager AnswerPanelManager;
     public required AnswerPanel AnswerPanel;
@@ -37,6 +38,9 @@ public class Game
     public required ISectorHandler sectorHandler;
     public required PrizesSuperGamePanelManager PrizesSuperGamePanelManager;
     public required PrizesSuperGamePanel PrizesSuperGamePanel;
+    public required SuperGameHandler SuperGameHandler;
+    public required SuperGameChoicePanel SuperGameChoicePanel;
+    public required SuperGameChoicePanelManager SuperGameChoicePanelManager;
 
     public Player? CurrentPlayer;
 
@@ -44,28 +48,29 @@ public class Game
 
     public async Task Play()
     {
-        PlayerManager manager;
+        await SuperGameHandler.Handle();
+        //PlayerManager manager;
 
-        while (true)
-        {
-            if (CurrentPlayer != Player) // AI
-            {
-                manager = PlayerAIManager;
-                await Task.Delay(2000);
-                BarabanManager.RotateBaraban();
-            }
-            else // Player
-            {
-                manager = PlayerManager;
-            }
+        //while (true)
+        //{
+        //    if (CurrentPlayer != Player) // AI
+        //    {
+        //        manager = PlayerAIManager;
+        //        await Task.Delay(2000);
+        //        BarabanManager.RotateBaraban();
+        //    }
+        //    else // Player
+        //    {
+        //        manager = PlayerManager;
+        //    }
 
-            _barabanTaskCompletionSource = new TaskCompletionSource();
-            await _barabanTaskCompletionSource.Task;
+        //    _barabanTaskCompletionSource = new TaskCompletionSource();
+        //    await _barabanTaskCompletionSource.Task;
 
-            if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
+        //    if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
 
-            await PlayStepAsync(manager);
-        }
+        //    await PlayStepAsync(manager);
+        //}
     }
     public async Task PlayStepAsync(PlayerManager manager)
     {

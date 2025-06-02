@@ -7,13 +7,33 @@ namespace UI.ViewModels;
 
 public class AnswerPanelViewModel
 {
+    private AnswerPanel _model;
+
     public ObservableCollection<AnswerUnitViewModel> Units { get; }
 
     public AnswerPanelViewModel(AnswerPanel model)
     {
+        _model = model;
         Units = new ObservableCollection<AnswerUnitViewModel>(
             model.AnswerUnits.Select(u => new AnswerUnitViewModel(u))
         );
+        model.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(AnswerPanel.AnswerUnits))
+                ResetModel();
+        };
+    }
+
+    public void ResetModel()
+    {
+        // Очистим текущие ViewModel-объекты
+        Units.Clear();
+
+        // Пересоздаём из новой модели
+        foreach (var unit in _model.AnswerUnits)
+        {
+            Units.Add(new AnswerUnitViewModel(unit));
+        }
     }
 }
 

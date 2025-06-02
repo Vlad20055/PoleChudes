@@ -44,7 +44,6 @@
 
             <!-- Baraban with button and arrow -->
             <cv:BarabanPanel
-                IsVisible="False"
                 x:Name="BarabanPanel"
                 Grid.Row="2"
                 Grid.RowSpan="2"
@@ -52,10 +51,11 @@
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />
             
+            <!-- Prizies at the end of the game -->
             <cv:PrizesSuperGamePanel
                 x:Name="PrizesSuperGamePanel"
                 Grid.Row="2"
-                Grid.RowSpan="2"
+                Grid.RowSpan="3"
                 Grid.Column="1"
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />
@@ -115,6 +115,12 @@
         <!-- Панель выбора приз/игра поверх всего остального -->
         <cv:PrizeChoicePanel
             x:Name="PrizeChoicePanel"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All" />
+
+        <!-- Панель выбора супер-игра/отказ поверх всего остального -->
+        <cv:SuperGameChoicePanel
+            x:Name="SuperGameChoicePanel"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All" />
     </AbsoluteLayout>

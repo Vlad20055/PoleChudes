@@ -19,6 +19,7 @@ public partial class GamePage : ContentPage
     private PrizePanelViewModel _prizePanelViewModel;
     private BarabanViewModel _barabanViewModel;
     private PrizesSuperGamePanelViewModel _prizesSuperGamePanelViewModel;
+    private SuperGameChoicePanelViewModel _superGameChoicePanelViewModel;
 
     public GamePage()
     {
@@ -40,9 +41,11 @@ public partial class GamePage : ContentPage
         _prizePanelViewModel = new PrizePanelViewModel(_game.PrizePanel);
         _barabanViewModel = new BarabanViewModel(_game.Baraban);
         _prizesSuperGamePanelViewModel = new PrizesSuperGamePanelViewModel(_game.PrizesSuperGamePanel);
+        _superGameChoicePanelViewModel = new SuperGameChoicePanelViewModel(_game.SuperGameChoicePanel);
 
         // create dependences
         BarabanPanel.BarabanContainer.Content = _barabanViewModel;
+        BarabanPanel.BindingContext = _barabanViewModel;
         PlayersPanel.BindingContext = _playersPanelViewModel;
         QuestionPanel.BindingContext = _questionViewModel;
         AnswerUnits.BindingContext = _answerPanelViewModel;
@@ -54,6 +57,7 @@ public partial class GamePage : ContentPage
         PrizeChoicePanel.BindingContext = _prizeChoicePanelViewModel;
         PrizePanel.BindingContext = _prizePanelViewModel;
         PrizesSuperGamePanel.BindingContext = _prizesSuperGamePanelViewModel;
+        SuperGameChoicePanel.BindingContext = _superGameChoicePanelViewModel;
 
         // subscribe on needed events
         KeyChoicePanel.Chosen += _game.SectorHandlerInjector.SectorKeyHandler.OnChoiceSelected;
@@ -62,10 +66,13 @@ public partial class GamePage : ContentPage
         PrizePanel.PrizeSelected += _game.SectorHandlerInjector.SectorPrizeHandler.OnPrizeSelected;
         PlusPanel.PositionSelected += _game.SectorHandlerInjector.SectorPlusHandler.OnPositionSelected;
         LettersPanel.LetterSelected += _game.SectorHandlerInjector.SectorScoreHandler.OnLetterSelected;
+        LettersPanel.LetterSelected += _game.SuperGameHandler.OnLetterSelected;
         _game.BarabanManager.StartRotation += _barabanViewModel.RotateAsync;
         BarabanPanel.SpinClicked += _barabanViewModel.RotateAsync;
         _barabanViewModel.RotationCompleted += _game.OnRotationCompleted;
         PrizesSuperGamePanel.PrizeSelected += _game.PrizesSuperGamePanelManager.OnPrizeSelected;
+        PrizesSuperGamePanel.Confirmed += _game.SuperGameHandler.OnConfirmed;
+        SuperGameChoicePanel.OnChoiceSelected += _game.SuperGameHandler.OnChoiceSelected;
 
         StartGame();
     }

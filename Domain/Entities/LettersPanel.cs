@@ -3,9 +3,16 @@ using System.Runtime.CompilerServices;
 
 namespace Domain.Entities;
 
-public class LettersPanel
+public class LettersPanel : INotifyPropertyChanged
 {
+    private bool _isVisible = true;
+
+    public bool IsVisible { get => _isVisible; set { _isVisible = value; OnPropertyChanged(); } }
     public List<LetterUnit> LetterUnits { get; set; } = new List<LetterUnit>();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 public class LetterUnit : INotifyPropertyChanged

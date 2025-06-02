@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
+using Application.Managers;
 using Application.UseCases;
 using Application.UseCases.SectorHandlers;
-using Application.Managers;
 
 namespace UI;
 
@@ -21,7 +21,8 @@ public class GameBuilder
         PlayerAIManager playerAIManager = new PlayerAIManager();
 
         // create task for game
-        GameTask gameTask = GameTaskManager.GetRandomTask(); // serialized
+        GameTaskManager gameTaskManager = new GameTaskManager();
+        GameTask gameTask = gameTaskManager.GetRandomTask(); // serialized
 
         // create AnswerPanel for game
         AnswerPanelManager answerPanelManager = new AnswerPanelManager(gameTask);
@@ -61,6 +62,10 @@ public class GameBuilder
         PrizesSuperGamePanel prizesSuperGamePanel = new PrizesSuperGamePanel(prizeList);
         PrizesSuperGamePanelManager prizesSuperGamePanelManager = new PrizesSuperGamePanelManager(prizesSuperGamePanel);
 
+        // create SuperGameChoicePanel for game
+        SuperGameChoicePanel superGameChoicePanel = new SuperGameChoicePanel();
+        SuperGameChoicePanelManager superGameChoicePanelManager = new SuperGameChoicePanelManager(superGameChoicePanel);
+
         // create SectorHandlers for game
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
         SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager, keyChoicePanelManager);
@@ -73,6 +78,17 @@ public class GameBuilder
             sectorPlusHandler,
             sectorPrizeHandler,
             sectorScoreHandler);
+
+        // create SuperGameHandler for game
+        SuperGameHandler superGameHandler = new SuperGameHandler(
+            barabanManager,
+            presenterManager,
+            prizesSuperGamePanelManager,
+            gameTaskManager,
+            answerPanelManager,
+            superGameChoicePanelManager,
+            lettersPanelManager
+            );
 
 
 
@@ -87,6 +103,7 @@ public class GameBuilder
             PlayerManager = playerManager,
             PlayerAIManager = playerAIManager,
             GameTask = gameTask,
+            GameTaskManager = gameTaskManager,
             AnswerPanelManager = answerPanelManager,
             AnswerPanel = answerPanelManager.AnswerPanel,
             LettersPanelManager = lettersPanelManager,
@@ -107,6 +124,9 @@ public class GameBuilder
             PrizePanel = prizePanelManager.PrizePanel,
             PrizesSuperGamePanelManager = prizesSuperGamePanelManager,
             PrizesSuperGamePanel = prizesSuperGamePanel,
+            SuperGameHandler = superGameHandler,
+            SuperGameChoicePanel = superGameChoicePanel,
+            SuperGameChoicePanelManager = superGameChoicePanelManager,
         };
 
         configureCurrentPlayer(game);

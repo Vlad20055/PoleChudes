@@ -11,6 +11,16 @@ public class AnswerPanelManager
         AnswerPanel = ConstructAnswerPanel(gameTask);
     }
 
+    public void SetTask(GameTask gameTask)
+    {
+        List<AnswerUnit> answerUnits = new List<AnswerUnit>();
+        foreach (var letter in gameTask.Answer)
+        {
+            answerUnits.Add(new AnswerUnit() { Letter = letter, IsOpened = false });
+        }
+        AnswerPanel.AnswerUnits = answerUnits;
+    }
+
     public AnswerPanel ConstructAnswerPanel(GameTask gameTask)
     {
         AnswerPanel answerPanel = new AnswerPanel();

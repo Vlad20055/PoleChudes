@@ -2,7 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:UI.ViewModels"
-             x:Class="UI.ContentViews.LettersPanel">
+             x:Class="UI.ContentViews.LettersPanel"
+             x:DataType="vm:LettersPanelViewModel"
+             IsVisible="{Binding IsVisible}">
 
     <VerticalStackLayout
         Padding="20"
@@ -10,7 +12,6 @@
 
         <!-- Панель букв: 11 столбцов, автоматом 3 строки при 33 буквах -->
         <CollectionView
-            x:DataType="vm:LettersPanelViewModel"
             ItemsSource="{Binding Units}"
             SelectionMode="None"
             WidthRequest="540"

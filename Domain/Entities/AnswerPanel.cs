@@ -1,11 +1,18 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Domain.Entities;
 
-public class AnswerPanel
+public class AnswerPanel : INotifyPropertyChanged
 {
-    public List<AnswerUnit> AnswerUnits { get; set; } = new List<AnswerUnit>();
+    private List<AnswerUnit> _answerUnits { get; set; } = new List<AnswerUnit>();
+
+    public List<AnswerUnit> AnswerUnits { get => _answerUnits; set { _answerUnits = value; OnPropertyChanged(); } }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 public class AnswerUnit : INotifyPropertyChanged

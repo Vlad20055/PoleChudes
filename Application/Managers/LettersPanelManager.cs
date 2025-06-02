@@ -6,6 +6,9 @@ public class LettersPanelManager
 {
     public LettersPanel LettersPanel { get; set; }
 
+    public void Enable() => LettersPanel.IsVisible = true;
+    public void Disable() => LettersPanel.IsVisible = false;
+
     public LettersPanelManager()
     {
         LettersPanel = ConstructLettersPanel();
@@ -30,6 +33,18 @@ public class LettersPanelManager
         }
     }
 
+    public void BlockLetter(char letter)
+    {
+        foreach (var el in LettersPanel.LetterUnits)
+        {
+            if (el.Letter == letter)
+            {
+                el.Enabled = false;
+                return;
+            }
+        }
+    }
+
     public void UnblockPanelAccordingToColors()
     {
         foreach (var el in LettersPanel.LetterUnits)
@@ -48,7 +63,25 @@ public class LettersPanelManager
             if (el.Letter == letter)
             {
                 el.Color = color;
+                return;
             }
+        }
+    }
+
+    public void SetDefaultState()
+    {
+        foreach (var el in LettersPanel.LetterUnits)
+        {
+            el.Color = "LightGray";
+            el.Enabled = false;
+        }
+    }
+
+    public void UnblockAllLetters()
+    {
+        foreach (var el in LettersPanel.LetterUnits)
+        {
+            el.Enabled = true;
         }
     }
 }

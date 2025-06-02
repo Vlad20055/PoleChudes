@@ -5,16 +5,30 @@ using Domain.Entities;
 
 namespace UI.ViewModels;
 
-public class LettersPanelViewModel
+public class LettersPanelViewModel : INotifyPropertyChanged
 {
+    private LettersPanel _model;
+
     public ObservableCollection<LetterUnitViewModel> Units { get; }
 
     public LettersPanelViewModel(LettersPanel model)
     {
+        _model = model;
         Units = new ObservableCollection<LetterUnitViewModel>(
             model.LetterUnits.Select(mu => new LetterUnitViewModel(mu))
         );
+        _model.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(LettersPanel.IsVisible))
+                OnPropertyChanged(nameof(IsVisible));
+        };
     }
+
+    public bool IsVisible => _model.IsVisible;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 public class LetterUnitViewModel : INotifyPropertyChanged

@@ -12,6 +12,8 @@ public class BarabanViewModel : GraphicsView, IDrawable
 
     private Baraban _model;
 
+    public bool isVisible => _model.IsVisible;
+
     float _angle;
     public float Angle
     {
@@ -82,6 +84,12 @@ public class BarabanViewModel : GraphicsView, IDrawable
         _model = model;
         _angle = model.Angle;
         _sectorImages = LoadSectorImages();
+
+        _model.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(Baraban.IsVisible))
+                OnPropertyChanged(nameof(isVisible));
+        };
     }
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
