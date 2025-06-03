@@ -59,6 +59,21 @@
                 Grid.Column="1"
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />
+            
+            <!-- WordInputPanel -->
+            <cv:WordInputPanel
+                x:Name="WordInputPanel"
+                Grid.Row="3"
+                Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
+
+            <!-- Timer for supergame -->
+            <cv:TimerPanel
+                x:Name="TimerPanel"
+                Grid.Row="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Start" />
 
             <!-- Game question -->
             <cv:QuestionPanel

@@ -66,6 +66,14 @@ public class GameBuilder
         SuperGameChoicePanel superGameChoicePanel = new SuperGameChoicePanel();
         SuperGameChoicePanelManager superGameChoicePanelManager = new SuperGameChoicePanelManager(superGameChoicePanel);
 
+        // create WordInputPanel for game
+        WordInputPanel wordInputPanel = new WordInputPanel();
+        WordInputPanelManager wordInputPanelManager = new WordInputPanelManager(wordInputPanel);
+
+        // create Timer for supergame
+        TimerPanel timerPanel = new TimerPanel();
+        TimerPanelManager timerPanelManager = new TimerPanelManager(timerPanel);
+
         // create SectorHandlers for game
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
         SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager, keyChoicePanelManager);
@@ -87,7 +95,9 @@ public class GameBuilder
             gameTaskManager,
             answerPanelManager,
             superGameChoicePanelManager,
-            lettersPanelManager
+            lettersPanelManager,
+            wordInputPanelManager,
+            timerPanelManager
             );
 
 
@@ -127,6 +137,10 @@ public class GameBuilder
             SuperGameHandler = superGameHandler,
             SuperGameChoicePanel = superGameChoicePanel,
             SuperGameChoicePanelManager = superGameChoicePanelManager,
+            WordInputPanel = wordInputPanel,
+            WordInputPanelManager = wordInputPanelManager,
+            TimerPanel = timerPanel,
+            TimerPanelManager = timerPanelManager,
         };
 
         configureCurrentPlayer(game);

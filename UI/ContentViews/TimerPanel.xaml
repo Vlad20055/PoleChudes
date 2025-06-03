@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:UI.ViewModels"
+             x:Class="UI.ContentViews.TimerPanel"
+             x:DataType="vm:TimerPanelViewModel"
+             IsVisible="{Binding IsVisible}" >
+
+    <Border
+        BackgroundColor="LightGray"
+        Padding="10"
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
+
+        <Label
+            x:Name="CountdownLabel"
+            Text="01:00"
+            FontSize="36"
+            FontAttributes="Bold"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+
+    </Border>
+
+</ContentView>

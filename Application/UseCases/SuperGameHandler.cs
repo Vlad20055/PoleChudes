@@ -12,9 +12,12 @@ public class SuperGameHandler
     private AnswerPanelManager _answererPanelManager;
     private SuperGameChoicePanelManager _superGameChoicePanelManager;
     private LettersPanelManager _lettersPanelManager;
+    private WordInputPanelManager _wordInputPanelManager;
+    private TimerPanelManager _timerPanelManager;
     private TaskCompletionSource _prizeTaskCompletionSource = new();
     private TaskCompletionSource<bool> _superGameTaskCompletionSource = new();
     private TaskCompletionSource<char> _letterTaskCompletionSource = new();
+    private TaskCompletionSource<string> _wordTaskCompletionSource = new();
 
     public SuperGameHandler(
         BarabanManager barabanManager,
@@ -23,7 +26,9 @@ public class SuperGameHandler
         GameTaskManager gameTaskManager,
         AnswerPanelManager answererPanelManager,
         SuperGameChoicePanelManager superGameChoicePanelManager,
-        LettersPanelManager lettersPanelManager)
+        LettersPanelManager lettersPanelManager,
+        WordInputPanelManager wordInputPanelManager,
+        TimerPanelManager timerPanelManager)
     {
         _barabanManager = barabanManager;
         _presenterManager = presenterManager;
@@ -32,14 +37,14 @@ public class SuperGameHandler
         _answererPanelManager = answererPanelManager;
         _superGameChoicePanelManager = superGameChoicePanelManager;
         _lettersPanelManager = lettersPanelManager;
+        _wordInputPanelManager = wordInputPanelManager;
+        _timerPanelManager = timerPanelManager;
     }
 
     public void OnConfirmed() => _prizeTaskCompletionSource.TrySetResult();
     public void OnChoiceSelected(bool want) => _superGameTaskCompletionSource.TrySetResult(want);
     public void OnLetterSelected(char letter) => _letterTaskCompletionSource.TrySetResult(letter);
-
-
-
+    public void OnWordClaimed(string word) => _wordTaskCompletionSource.TrySetResult(word);
 
     public async Task Handle()
     {
@@ -104,5 +109,39 @@ public class SuperGameHandler
 
         await Task.Delay(1000);
         _presenterManager.SetMessage("У вас минута на то, чтобы отгадать слово.");
+        _wordInputPanelManager.HideRefuse();
+        _wordInputPanelManager.Enable();
+
+        var timerTask = _timerPanelManager.StartTimer();
+        _wordTaskCompletionSource = new();
+        //string word = await _wordTaskCompetionSource.Task;
+
+        var completed = await Task.WhenAny(
+                _wordTaskCompletionSource.Task,
+                timerTask ?? throw new Exception("Null reference to timerTask"));
+
+        _wordInputPanelManager.Disable();
+
+        if (completed == _wordTaskCompletionSource.Task) // названо слово
+        {
+            string word = await _wordTaskCompletionSource.Task;
+            _timerPanelManager.CancelTimer();
+            if (word.ToUpper() == _gameTaskManager.GetAnswer())
+            {
+                _presenterManager.SetMessage("Да! Абсолютно точно!\nПоздравляю с победой!");
+            }
+            else
+            {
+                _presenterManager.SetMessage("К сожалению, нет. Вы проиграли!");
+            }
+            return;
+            
+        }
+
+        _presenterManager.SetMessage("Увы, время вышло. Вы проиграли!");
+        return;
     }
+
+
+    
 }

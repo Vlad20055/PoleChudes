@@ -69,4 +69,6 @@ public class GameTaskManager
         _currentTask.Answer = supertask.Answer;
         return _currentTask;
     }
+
+    public string GetAnswer() => _currentTask.Answer;
 }

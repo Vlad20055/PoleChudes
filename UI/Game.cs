@@ -41,6 +41,10 @@ public class Game
     public required SuperGameHandler SuperGameHandler;
     public required SuperGameChoicePanel SuperGameChoicePanel;
     public required SuperGameChoicePanelManager SuperGameChoicePanelManager;
+    public required WordInputPanel WordInputPanel;
+    public required WordInputPanelManager WordInputPanelManager;
+    public required TimerPanel TimerPanel;
+    public required TimerPanelManager TimerPanelManager;
 
     public Player? CurrentPlayer;
 

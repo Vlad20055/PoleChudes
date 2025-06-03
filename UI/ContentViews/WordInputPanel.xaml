@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:UI.ViewModels"
+             x:Class="UI.ContentViews.WordInputPanel"
+             x:DataType="vm:WordInputPanelViewModel"
+             IsVisible="{Binding IsVisible}">
+
+    <VerticalStackLayout Spacing="10" Padding="20"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center">
+
+        <Entry x:Name="WordEntry"
+               Placeholder="Введите слово"
+               FontSize="18"
+               WidthRequest="200" />
+
+        <HorizontalStackLayout>
+            <Button x:Name="ClaimButton"
+                    Text="Назвать слово"
+                    FontAttributes="Bold"
+                    Clicked="ClaimButton_Clicked"
+                    WidthRequest="200" />
+
+            <Button x:Name="RefuseButton"
+                    IsVisible="{Binding IsRefuseVisible}"
+                    Text="Отмена"
+                    FontAttributes="Bold"
+                    Clicked="RefuseButton_Clicked"
+                    WidthRequest="200" />
+        </HorizontalStackLayout>
+        
+    </VerticalStackLayout>
+
+</ContentView>

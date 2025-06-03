@@ -20,6 +20,8 @@ public partial class GamePage : ContentPage
     private BarabanViewModel _barabanViewModel;
     private PrizesSuperGamePanelViewModel _prizesSuperGamePanelViewModel;
     private SuperGameChoicePanelViewModel _superGameChoicePanelViewModel;
+    private WordInputPanelViewModel _wordInputPanelViewModel;
+    private TimerPanelViewModel _timerPanelViewModel;
 
     public GamePage()
     {
@@ -42,6 +44,8 @@ public partial class GamePage : ContentPage
         _barabanViewModel = new BarabanViewModel(_game.Baraban);
         _prizesSuperGamePanelViewModel = new PrizesSuperGamePanelViewModel(_game.PrizesSuperGamePanel);
         _superGameChoicePanelViewModel = new SuperGameChoicePanelViewModel(_game.SuperGameChoicePanel);
+        _wordInputPanelViewModel = new WordInputPanelViewModel(_game.WordInputPanel);
+        _timerPanelViewModel = new TimerPanelViewModel(_game.TimerPanel);
 
         // create dependences
         BarabanPanel.BarabanContainer.Content = _barabanViewModel;
@@ -58,6 +62,8 @@ public partial class GamePage : ContentPage
         PrizePanel.BindingContext = _prizePanelViewModel;
         PrizesSuperGamePanel.BindingContext = _prizesSuperGamePanelViewModel;
         SuperGameChoicePanel.BindingContext = _superGameChoicePanelViewModel;
+        WordInputPanel.BindingContext = _wordInputPanelViewModel;
+        TimerPanel.BindingContext = _timerPanelViewModel;
 
         // subscribe on needed events
         KeyChoicePanel.Chosen += _game.SectorHandlerInjector.SectorKeyHandler.OnChoiceSelected;
@@ -73,6 +79,9 @@ public partial class GamePage : ContentPage
         PrizesSuperGamePanel.PrizeSelected += _game.PrizesSuperGamePanelManager.OnPrizeSelected;
         PrizesSuperGamePanel.Confirmed += _game.SuperGameHandler.OnConfirmed;
         SuperGameChoicePanel.OnChoiceSelected += _game.SuperGameHandler.OnChoiceSelected;
+        WordInputPanel.WordClaimed += _game.SuperGameHandler.OnWordClaimed;
+        _game.TimerPanelManager.Start += TimerPanel.StartTimerAsync;
+        _game.TimerPanelManager.Cancel += TimerPanel.CancelTimer;
 
         StartGame();
     }
