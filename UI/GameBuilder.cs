@@ -74,6 +74,10 @@ public class GameBuilder
         TimerPanel timerPanel = new TimerPanel();
         TimerPanelManager timerPanelManager = new TimerPanelManager(timerPanel);
 
+        // create MenuPanel for game
+        MenuPanel menuPanel = new MenuPanel();
+        MenuPanelManager menuPanelManager = new MenuPanelManager(menuPanel);
+
         // create SectorHandlers for game
         SectorBankrotHandler sectorBankrotHandler = new SectorBankrotHandler(presenterManager);
         SectorKeyHandler sectorKeyHandler = new SectorKeyHandler(presenterManager, keyPanelManager, keyChoicePanelManager);
@@ -141,6 +145,8 @@ public class GameBuilder
             WordInputPanelManager = wordInputPanelManager,
             TimerPanel = timerPanel,
             TimerPanelManager = timerPanelManager,
+            MenuPanel = menuPanel,
+            MenuPanelManager = menuPanelManager,
         };
 
         configureCurrentPlayer(game);

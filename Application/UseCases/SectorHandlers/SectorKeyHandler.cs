@@ -81,7 +81,6 @@ public class SectorKeyHandler : ISectorHandler
         await Task.Delay(1500);
         _keyPanelManager.SetDefaultState();
         _keyPanelManager.Disable();
-        _presenterManager.SetMessage("Вращайте барабан.");
         _state = ISectorHandler.State.Completed_Change;
 
         return _state;

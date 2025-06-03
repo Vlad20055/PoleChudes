@@ -111,7 +111,6 @@ public class SectorPrizeHandler : ISectorHandler
         _prizePanelManager.Disable();
         _prizePanelManager.DisableButtons();
         if (_playerManager != null) _playerManager.RemovePlayer(); // удаляем текущего игрока
-        _presenterManager.SetMessage("Вращайте барабан!");
         _state = ISectorHandler.State.Completed_Change;
 
         return _state;

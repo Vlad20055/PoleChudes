@@ -8,6 +8,7 @@ namespace UI;
 public class Game
 {
     private TaskCompletionSource _barabanTaskCompletionSource = new TaskCompletionSource();
+    private TaskCompletionSource<string?> _wordTaskCompletionSource = new TaskCompletionSource<string?>();
 
     public required BarabanManager BarabanManager;
     public required Baraban Baraban;
@@ -45,6 +46,8 @@ public class Game
     public required WordInputPanelManager WordInputPanelManager;
     public required TimerPanel TimerPanel;
     public required TimerPanelManager TimerPanelManager;
+    public required MenuPanel MenuPanel;
+    public required MenuPanelManager MenuPanelManager;
 
     public Player? CurrentPlayer;
 
@@ -52,29 +55,79 @@ public class Game
 
     public async Task Play()
     {
-        await SuperGameHandler.Handle();
-        //PlayerManager manager;
+        PlayerManager manager;
 
-        //while (true)
-        //{
-        //    if (CurrentPlayer != Player) // AI
-        //    {
-        //        manager = PlayerAIManager;
-        //        await Task.Delay(2000);
-        //        BarabanManager.RotateBaraban();
-        //    }
-        //    else // Player
-        //    {
-        //        manager = PlayerManager;
-        //    }
+        while (true)
+        {
+            if (IsGameOver())
+            {
+                if (CurrentPlayer == Player)
+                {
+                    SuperGameHandler.SetScore(CurrentPlayer.Score);
+                    await SuperGameHandler.Handle();
+                }
+                else
+                {
+                    if (CurrentPlayer != null) PresenterManager.SetMessage($"Поздравляю! {CurrentPlayer.Name} выиграл!");
+                }
+                return;
+            }
 
-        //    _barabanTaskCompletionSource = new TaskCompletionSource();
-        //    await _barabanTaskCompletionSource.Task;
+            PresenterManager.SetMessage("Вращайте барабан.");
 
-        //    if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
+            if (CurrentPlayer != Player) // AI
+            {
+                manager = PlayerAIManager;
+                await Task.Delay(2000);
+                BarabanManager.RotateBaraban();
+            }
+            else // Player
+            {
+                manager = PlayerManager;
+                MenuPanelManager.EnableAllButtons();
+            }
 
-        //    await PlayStepAsync(manager);
-        //}
+            _barabanTaskCompletionSource = new TaskCompletionSource();
+            _wordTaskCompletionSource = new TaskCompletionSource<string?>();
+
+            var completed = await Task.WhenAny(
+                _barabanTaskCompletionSource.Task,
+                _wordTaskCompletionSource.Task);
+
+            if (completed == _barabanTaskCompletionSource.Task) // rotate baraban completed
+            {
+                if (CurrentPlayer != null) manager.SetPlayer(CurrentPlayer);
+
+                await PlayStepAsync(manager);
+            }
+            else // Player wants to claim the word
+            {
+                string? word = await _wordTaskCompletionSource.Task;
+                if (word == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    if (word.ToUpper() == GameTaskManager.GetAnswer())
+                    {
+                        PresenterManager.SetMessage("Да! Абсолютно точно!");
+                        await Task.Delay(2000);
+                        AnswerPanelManager.OpenAllAnswer();
+                        continue;
+                    }
+                    else
+                    {
+                        PresenterManager.SetMessage("Нет. К сожалению, вы ошиблись.");
+                        if (CurrentPlayer != null) CurrentPlayer.Active = false;
+                        ChangePlayer();
+                        continue;
+                    }
+                }
+            }
+
+            
+        }
     }
     public async Task PlayStepAsync(PlayerManager manager)
     {
@@ -89,7 +142,7 @@ public class Game
 
         if (state == ISectorHandler.State.Completed_Change) ChangePlayer();
     }
-    public void ChangePlayer() // it is considered that it is possible to change current player correctly
+    public void ChangePlayer() // it is considered that at least one player is active
     {
         int currentPlayerId = 0;
         Player[] players = { Player, Player1, Player2 };
@@ -114,5 +167,37 @@ public class Game
                 break;
             }
         }
+    }
+    public bool IsGameOver()
+    {
+        if (Player.Active == false &&
+            Player1.Active == false &&
+            Player2.Active == false)
+        {
+            return false;
+        }
+
+        foreach (var el in AnswerPanel.AnswerUnits)
+        {
+            if (!el.IsOpened) return false;
+        }
+
+        return true;
+    }
+
+    public void OnWordButton()
+    {
+        MenuPanelManager.DisableAllButtons();
+        WordInputPanelManager.Enable();
+    }
+    public void OnWordClaimed(string word)
+    {
+        WordInputPanelManager.Disable();
+        _wordTaskCompletionSource.TrySetResult(word);
+    }
+    public void OnWordRefused()
+    {
+        WordInputPanelManager.Disable();
+        _wordTaskCompletionSource.TrySetResult(null);
     }
 }

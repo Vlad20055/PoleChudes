@@ -13,7 +13,7 @@ public class PrizesSuperGamePanelManager
 
     public void Enable() => _prizesSuperGamePanel.IsVisible = true;
     public void Disable() => _prizesSuperGamePanel.IsVisible = false;
-
+    public void SetScore(int score) => _prizesSuperGamePanel.Score = score;
     public void OnPrizeSelected(string name)
     {
         foreach (var el in _prizesSuperGamePanel.Units)
@@ -39,6 +39,4 @@ public class PrizesSuperGamePanelManager
             }
         }
     }
-
-    public void SetScore(int score) => _prizesSuperGamePanel.Score = score;
 }

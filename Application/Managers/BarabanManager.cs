@@ -21,5 +21,8 @@ public class BarabanManager
     }
 
     public void RemoveBaraban() => _baraban.IsVisible = false;
-    public void RotateBaraban() => StartRotation?.Invoke();
+    public void RotateBaraban()
+    {
+        StartRotation?.Invoke();
+    }
 }

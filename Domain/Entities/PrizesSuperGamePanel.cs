@@ -6,7 +6,7 @@ namespace Domain.Entities;
 public class PrizesSuperGamePanel : INotifyPropertyChanged
 {
     private bool _isVisible = false;
-    private int _score = 1000;
+    private int _score = 0;
 
     public List<PrizeSuperGameUnit> Units;
     public int Score { get => _score; set { _score = value; OnPropertyChanged(); } }

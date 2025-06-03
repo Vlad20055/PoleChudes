@@ -61,7 +61,6 @@ public class SectorPlusHandler : ISectorHandler
         char letter = _answerPanelManager.GetLetter(position);
         _lettersPanelManager.SetColor(letter, "Green");
         _rightWrongLettersManager.RemoveRightLetter(letter);
-        _presenterManager.SetMessage("Будете вращать барабан?");
 
         return _state;
     }

@@ -47,7 +47,6 @@ public class SectorScoreHandler : ISectorHandler
         if (_playerManager != null) _playerManager.SetMessage($"Буква {choice}");
         await ProcessChosenLetter(choice);
         if (_playerManager != null) _playerManager.SetMessage(string.Empty);
-        _presenterManager.SetMessage("Вращайте барабан");
         return _state;
     }
     public void OnLetterSelected(char letter) => _taskCompletionSource.TrySetResult(letter);

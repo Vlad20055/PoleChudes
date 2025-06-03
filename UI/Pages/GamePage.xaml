@@ -42,6 +42,14 @@
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />
 
+            <!-- MenuPanel for game -->
+            <cv:MenuPanel
+                x:Name="MenuPanel"
+                Grid.Row="4"
+                Grid.Column="0"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
+
             <!-- Baraban with button and arrow -->
             <cv:BarabanPanel
                 x:Name="BarabanPanel"

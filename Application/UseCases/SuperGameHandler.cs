@@ -45,6 +45,7 @@ public class SuperGameHandler
     public void OnChoiceSelected(bool want) => _superGameTaskCompletionSource.TrySetResult(want);
     public void OnLetterSelected(char letter) => _letterTaskCompletionSource.TrySetResult(letter);
     public void OnWordClaimed(string word) => _wordTaskCompletionSource.TrySetResult(word);
+    public void SetScore(int score) => _prizesSuperGamePanelManager.SetScore(score);
 
     public async Task Handle()
     {
@@ -129,16 +130,17 @@ public class SuperGameHandler
             if (word.ToUpper() == _gameTaskManager.GetAnswer())
             {
                 _presenterManager.SetMessage("Да! Абсолютно точно!\nПоздравляю с победой!");
+                _answererPanelManager.OpenAllAnswer();
             }
             else
             {
-                _presenterManager.SetMessage("К сожалению, нет. Вы проиграли!");
+                _presenterManager.SetMessage($"К сожалению, нет. Вы проиграли!\nЭто было {_gameTaskManager.GetAnswer()}.");
             }
             return;
             
         }
 
-        _presenterManager.SetMessage("Увы, время вышло. Вы проиграли!");
+        _presenterManager.SetMessage($"Увы, время вышло. Вы проиграли!\nЭто было {_gameTaskManager.GetAnswer()}.");
         return;
     }
 

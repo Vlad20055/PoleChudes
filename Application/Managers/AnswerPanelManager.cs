@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using System.Linq.Expressions;
+using Domain.Entities;
 
 namespace Application.Managers;
 
@@ -43,6 +44,14 @@ public class AnswerPanelManager
             }
         }
         return numberOfOpenedLetters;
+    }
+
+    public void OpenAllAnswer()
+    {
+        foreach (var el in AnswerPanel.AnswerUnits)
+        {
+            el.IsOpened = true;
+        }
     }
 
     public char GetLetter(int position)

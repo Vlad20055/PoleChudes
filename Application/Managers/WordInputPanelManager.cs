@@ -14,4 +14,5 @@ public class WordInputPanelManager
     public void Enable() => _wordInputPanel.IsVisible = true;
     public void Disable() => _wordInputPanel.IsVisible = false;
     public void HideRefuse() => _wordInputPanel.IsRefuseVisible = false;
+    public void ShowRefuse() => _wordInputPanel.IsRefuseVisible = true;
 }

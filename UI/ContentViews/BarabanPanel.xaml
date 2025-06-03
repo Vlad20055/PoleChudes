@@ -34,11 +34,5 @@
                 Margin="-10,0,0,0" />
         </HorizontalStackLayout>
 
-        <Button
-            Text="Крутить"
-            Clicked="OnSpinClicked"
-            HorizontalOptions="Center"
-            WidthRequest="200"
-            HeightRequest="60"/>
     </VerticalStackLayout>
 </ContentView>

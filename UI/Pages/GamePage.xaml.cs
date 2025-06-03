@@ -22,6 +22,7 @@ public partial class GamePage : ContentPage
     private SuperGameChoicePanelViewModel _superGameChoicePanelViewModel;
     private WordInputPanelViewModel _wordInputPanelViewModel;
     private TimerPanelViewModel _timerPanelViewModel;
+    private MenuPanelViewModel _menuPanelViewModel;
 
     public GamePage()
     {
@@ -46,6 +47,7 @@ public partial class GamePage : ContentPage
         _superGameChoicePanelViewModel = new SuperGameChoicePanelViewModel(_game.SuperGameChoicePanel);
         _wordInputPanelViewModel = new WordInputPanelViewModel(_game.WordInputPanel);
         _timerPanelViewModel = new TimerPanelViewModel(_game.TimerPanel);
+        _menuPanelViewModel = new MenuPanelViewModel(_game.MenuPanel);
 
         // create dependences
         BarabanPanel.BarabanContainer.Content = _barabanViewModel;
@@ -64,6 +66,7 @@ public partial class GamePage : ContentPage
         SuperGameChoicePanel.BindingContext = _superGameChoicePanelViewModel;
         WordInputPanel.BindingContext = _wordInputPanelViewModel;
         TimerPanel.BindingContext = _timerPanelViewModel;
+        MenuPanel.BindingContext = _menuPanelViewModel;
 
         // subscribe on needed events
         KeyChoicePanel.Chosen += _game.SectorHandlerInjector.SectorKeyHandler.OnChoiceSelected;
@@ -74,7 +77,11 @@ public partial class GamePage : ContentPage
         LettersPanel.LetterSelected += _game.SectorHandlerInjector.SectorScoreHandler.OnLetterSelected;
         LettersPanel.LetterSelected += _game.SuperGameHandler.OnLetterSelected;
         _game.BarabanManager.StartRotation += _barabanViewModel.RotateAsync;
-        BarabanPanel.SpinClicked += _barabanViewModel.RotateAsync;
+        MenuPanel.RotateClicked += _game.MenuPanelManager.DisableAllButtons;
+        MenuPanel.RotateClicked += _game.BarabanManager.RotateBaraban;
+        MenuPanel.WordClicked += _game.OnWordButton;
+        WordInputPanel.WordClaimed += _game.OnWordClaimed;
+        WordInputPanel.Refused += _game.OnWordRefused;
         _barabanViewModel.RotationCompleted += _game.OnRotationCompleted;
         PrizesSuperGamePanel.PrizeSelected += _game.PrizesSuperGamePanelManager.OnPrizeSelected;
         PrizesSuperGamePanel.Confirmed += _game.SuperGameHandler.OnConfirmed;
