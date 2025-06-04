@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Domain.Interfaces;
+using Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace UI
 {
@@ -15,8 +17,28 @@ namespace UI
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            // Строка подключения к локальной MongoDB:
+            string connectionString = "mongodb://localhost:27017";
+            string dbName = "PoleChudes";
+
+            builder.Services.AddSingleton<ISequenceGenerator>(
+                sp => new MongoSequenceGenerator(connectionString, dbName)
+            );
+
+            builder.Services.AddSingleton<IUserRepository>(
+                sp => new MongoUserRepository(
+                    connectionString,
+                    dbName,
+                    sp.GetRequiredService<ISequenceGenerator>()
+                )
+            );
+
+            builder.Services.AddSingleton<LoginPage>();
+            builder.Services.AddSingleton<GamePage>();
+
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

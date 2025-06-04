@@ -1,14 +1,98 @@
+using Domain.Entities;
+using Domain.Interfaces;
+using System.Text;
+using System.Security.Cryptography;
+
 namespace UI;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage()
-	{
-		InitializeComponent();
-	}
+    private readonly IUserRepository _userRepo;
 
-    private async void OnPlayButton_Clicked(object sender, EventArgs e)
+    public LoginPage(IUserRepository userRepository)
     {
-        await Navigation.PushAsync(new GamePage());
+        InitializeComponent();
+        _userRepo = userRepository;
+    }
+
+    private async void OnLoginClicked(object sender, EventArgs e)
+    {
+        string login = LoginEntry.Text?.Trim() ?? string.Empty;
+        string password = PasswordEntry.Text?.Trim() ?? string.Empty;
+
+        if (login.Length < 3 || password.Length < 3)
+        {
+            await DisplayAlert("Ошибка", "Логин и пароль должны быть минимум 3 символа.", "OK");
+            return;
+        }
+
+        string passwordHash = ComputeSha256Hash(password);
+
+        try
+        {
+            var user = await _userRepo.AuthenticateAsync(login, passwordHash);
+            if (user != null)
+            {
+                // Переходим на GamePage, который тоже зарегистрирован в DI
+                var gamePage = Microsoft.Maui.Controls.Application.Current.Windows[0].Page.Handler.MauiContext.Services.GetService<GamePage>()!;
+                await Navigation.PushAsync(gamePage);
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", "Неверный логин или пароль.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка", $"Не удалось войти: {ex.Message}", "OK");
+        }
+    }
+
+    private async void OnRegisterClicked(object sender, EventArgs e)
+    {
+        string login = LoginEntry.Text?.Trim() ?? string.Empty;
+        string password = PasswordEntry.Text?.Trim() ?? string.Empty;
+
+        if (login.Length < 3 || password.Length < 3)
+        {
+            await DisplayAlert("Ошибка", "Логин и пароль должны быть минимум 3 символа.", "OK");
+            return;
+        }
+
+        string passwordHash = ComputeSha256Hash(password);
+
+        var newUser = new User
+        {
+            Name = login, // пока Name = Login
+            Login = login,
+            PasswordHash = passwordHash
+        };
+
+        try
+        {
+            bool created = await _userRepo.RegisterAsync(newUser);
+            if (created)
+            {
+                await DisplayAlert("Успех", "Регистрация прошла успешно! Теперь войдите.", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Ошибка", "Пользователь с таким логином уже существует.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка", $"Не удалось зарегистрироваться: {ex.Message}", "OK");
+        }
+    }
+
+    private static string ComputeSha256Hash(string raw)
+    {
+        using var sha = SHA256.Create();
+        byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(raw));
+        var sb = new StringBuilder();
+        foreach (var b in bytes)
+            sb.Append(b.ToString("x2"));
+        return sb.ToString();
     }
 }
