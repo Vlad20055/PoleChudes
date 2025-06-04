@@ -1,9 +1,12 @@
+using UI.Services;
 using UI.ViewModels;
 
 namespace UI;
 
 public partial class GamePage : ContentPage
 {
+    private readonly CurrentUserService _currentUser;
+
     private GameBuilder _gameBuilder = new GameBuilder();
     private Game _game;
 
@@ -24,12 +27,16 @@ public partial class GamePage : ContentPage
     private TimerPanelViewModel _timerPanelViewModel;
     private MenuPanelViewModel _menuPanelViewModel;
 
-    public GamePage()
+    public GamePage(CurrentUserService currentUser)
     {
         InitializeComponent();
 
+        _currentUser = currentUser;
+
         // create _game
         _game = _gameBuilder.Build();
+        _game.Player.Name = currentUser.UserName ?? "YOU";
+
 
         // create ViewModels
         _playersPanelViewModel = new PlayersViewModel(_game.Player1, _game.Player2, _game.Player);

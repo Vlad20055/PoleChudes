@@ -2,17 +2,20 @@ using Domain.Entities;
 using Domain.Interfaces;
 using System.Text;
 using System.Security.Cryptography;
+using UI.Services;
 
 namespace UI;
 
 public partial class LoginPage : ContentPage
 {
     private readonly IUserRepository _userRepo;
+    private readonly CurrentUserService _currentUser;
 
-    public LoginPage(IUserRepository userRepository)
+    public LoginPage(IUserRepository userRepository, CurrentUserService currentUser)
     {
         InitializeComponent();
         _userRepo = userRepository;
+        _currentUser = currentUser;
     }
 
     private async void OnLoginClicked(object sender, EventArgs e)
@@ -33,8 +36,11 @@ public partial class LoginPage : ContentPage
             var user = await _userRepo.AuthenticateAsync(login, passwordHash);
             if (user != null)
             {
-                // Переходим на GamePage, который тоже зарегистрирован в DI
-                var gamePage = Microsoft.Maui.Controls.Application.Current.Windows[0].Page.Handler.MauiContext.Services.GetService<GamePage>()!;
+                GamePage? gamePage = null;
+                string name = LoginEntry.Text?.Trim() ?? string.Empty;
+                _currentUser.UserName = name;
+                if (Handler != null && Handler.MauiContext != null) gamePage = Handler.MauiContext.Services.GetService<GamePage>()!;
+                
                 await Navigation.PushAsync(gamePage);
             }
             else

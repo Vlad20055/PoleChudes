@@ -9,8 +9,12 @@ public partial class App : Microsoft.Maui.Controls.Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        var loginPage = Handler.MauiContext.Services.GetService<LoginPage>()
-                        ?? throw new InvalidOperationException("LoginPage не зарегистрирована в DI");
+        LoginPage? loginPage = null;
+
+        if (Handler.MauiContext != null)
+        {
+            loginPage = Handler.MauiContext.Services.GetService<LoginPage>();
+        }
 
         var nav = new NavigationPage(loginPage);
         return new Window(nav);

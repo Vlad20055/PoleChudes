@@ -1,6 +1,7 @@
 ﻿using Domain.Interfaces;
 using Infrastructure;
 using Microsoft.Extensions.Logging;
+using UI.Services;
 
 namespace UI
 {
@@ -33,6 +34,7 @@ namespace UI
                 )
             );
 
+            builder.Services.AddSingleton<CurrentUserService>();    
             builder.Services.AddSingleton<LoginPage>();
             builder.Services.AddSingleton<GamePage>();
 
