@@ -2,6 +2,7 @@
 using Application.Managers;
 using Application.UseCases;
 using Application.UseCases.SectorHandlers;
+using Infrastructure.Serialization;
 
 namespace UI;
 
@@ -104,10 +105,12 @@ public class GameBuilder
             timerPanelManager
             );
 
-
+        // get SaveService for game
+        SaveService? saveService = (Microsoft.Maui.Controls.Application.Current != null ? Microsoft.Maui.Controls.Application.Current.Handler.GetService<SaveService>() ?? throw new Exception("No SaveService") : null);
+        if (saveService == null) throw new Exception("No SaveService");
 
         // create game with all their components
-        Game game = new Game()
+        Game game = new Game(saveService)
         {
             BarabanManager = barabanManager,
             Baraban = baraban,

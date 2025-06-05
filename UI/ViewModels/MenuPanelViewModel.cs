@@ -19,12 +19,15 @@ public class MenuPanelViewModel : INotifyPropertyChanged
                 OnPropertyChanged(nameof(IsWordButtonVisible));
             if (e.PropertyName == nameof(MenuPanel.IsVisible))
                 OnPropertyChanged(nameof(IsVisible));
+            if (e.PropertyName == nameof(MenuPanel.IsSaveButtonVisible))
+                OnPropertyChanged(nameof(IsSaveButtonVisible));
         };
     }
 
     public bool IsVisible => _model.IsVisible;
     public bool IsRotateButtonVisible => _model.IsRotateButtonVisible;
     public bool IsWordButtonVisible => _model.IsWordButtonVisible;
+    public bool IsSaveButtonVisible => _model.IsSaveButtonVisible;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>

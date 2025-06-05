@@ -5,8 +5,6 @@ namespace UI;
 
 public partial class GamePage : ContentPage
 {
-    private readonly CurrentUserService _currentUser;
-
     private GameBuilder _gameBuilder = new GameBuilder();
     private Game _game;
 
@@ -30,8 +28,6 @@ public partial class GamePage : ContentPage
     public GamePage(CurrentUserService currentUser)
     {
         InitializeComponent();
-
-        _currentUser = currentUser;
 
         // create _game
         _game = _gameBuilder.Build();
@@ -96,6 +92,7 @@ public partial class GamePage : ContentPage
         WordInputPanel.WordClaimed += _game.SuperGameHandler.OnWordClaimed;
         _game.TimerPanelManager.Start += TimerPanel.StartTimerAsync;
         _game.TimerPanelManager.Cancel += TimerPanel.CancelTimer;
+        MenuPanel.SaveClicked += _game.SaveGameAsync;
 
         StartGame();
     }

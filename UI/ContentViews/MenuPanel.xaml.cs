@@ -4,6 +4,7 @@ public partial class MenuPanel : ContentView
 {
     public event Action? RotateClicked;
     public event Action? WordClicked;
+    public event Action? SaveClicked;
 
     public MenuPanel()
 	{
@@ -18,5 +19,10 @@ public partial class MenuPanel : ContentView
     private void RotateButton_Clicked(object sender, EventArgs e)
     {
         RotateClicked?.Invoke();
+    }
+
+    private void SaveButton_Clicked(object sender, EventArgs e)
+    {
+        SaveClicked?.Invoke();
     }
 }

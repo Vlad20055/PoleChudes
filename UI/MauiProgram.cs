@@ -1,4 +1,6 @@
-﻿using Domain.Interfaces;
+﻿using Application.Interfaces;
+using Application.UseCases;
+using Domain.Interfaces;
 using Infrastructure;
 using Microsoft.Extensions.Logging;
 using UI.Services;
@@ -34,9 +36,14 @@ namespace UI
                 )
             );
 
-            builder.Services.AddSingleton<CurrentUserService>();    
+            builder.Services.AddSingleton<CurrentUserService>();
             builder.Services.AddSingleton<LoginPage>();
-            builder.Services.AddSingleton<GamePage>();
+            builder.Services.AddTransient<GamePage>();
+
+            builder.Services.AddSerialization();
+            builder.Services.AddSingleton<IFileSystemPath, MauiFileSystem>();
+            builder.Services.AddSingleton<ISaveRepository, SaveRepository>();
+            builder.Services.AddSingleton<SaveService>();
 
 
 #if DEBUG

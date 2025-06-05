@@ -24,7 +24,17 @@
             Clicked="RotateButton_Clicked"
             HorizontalOptions="Center"
             WidthRequest="200"
-            HeightRequest="60"/>
+            HeightRequest="60" />
+
+
+        <Button
+            x:Name="SaveButton"
+            IsVisible="{Binding IsSaveButtonVisible}"
+            Text="Сохранить игру"
+            Clicked="SaveButton_Clicked"
+            HorizontalOptions="Center"
+            WidthRequest="200"
+            HeightRequest="60" />
     </VerticalStackLayout>
     
     

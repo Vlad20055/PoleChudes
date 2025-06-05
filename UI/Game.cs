@@ -5,8 +5,8 @@ using Application.UseCases;
 
 namespace UI;
 
-public class Game
-{
+public class Game(SaveService saveService)
+{   
     private TaskCompletionSource _barabanTaskCompletionSource = new TaskCompletionSource();
     private TaskCompletionSource<string?> _wordTaskCompletionSource = new TaskCompletionSource<string?>();
 
@@ -199,5 +199,14 @@ public class Game
     {
         WordInputPanelManager.Disable();
         _wordTaskCompletionSource.TrySetResult(null);
+    }
+
+    public async void SaveGameAsync()
+    {
+        await saveService.SaveGame(
+            Player.Name,
+            Player,
+            Player1,
+            Player2);
     }
 }
